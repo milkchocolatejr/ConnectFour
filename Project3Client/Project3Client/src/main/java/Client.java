@@ -5,11 +5,7 @@ import java.io.Serializable;
 import java.net.Socket;
 import java.util.function.Consumer;
 
-
-
 public class Client extends Thread{
-
-	
 	Socket socketClient;
 	
 	ObjectOutputStream out;
@@ -17,21 +13,18 @@ public class Client extends Thread{
 
 	
 	public void run() {
-		
+
 		try {
 			socketClient= new Socket("127.0.0.1",5555);
 	    	out = new ObjectOutputStream(socketClient.getOutputStream());
 	    	in = new ObjectInputStream(socketClient.getInputStream());
 	   	 	socketClient.setTcpNoDelay(true);
-
 		}
 		catch(Exception e) {}
 		
 		while(true) {
-			 
 			try {
 				Message message = (Message) in.readObject();
-				System.out.println(message);
 			}
 			catch(Exception e) {}
 		}
@@ -39,7 +32,6 @@ public class Client extends Thread{
     }
 	
 	public void send(Message data) {
-		
 		try {
 			out.writeObject(data);
 		} catch (IOException e) {
