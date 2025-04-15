@@ -17,5 +17,8 @@ public class Message implements Serializable {
         this.messageText = messageText;
     }
 
-    public toString(){return messageText;}
+    @Override
+    public String toString(){
+        return messageText;
+    }
 }
