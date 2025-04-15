@@ -4,6 +4,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -42,5 +43,9 @@ public class SceneBuilder {
         canvas.setCenter(root);
 
         return new Scene(canvas, WIDTH, HEIGHT);
+    }
+
+    public static Scene buildGameScreen(Shape board){
+        return new Scene(new BorderPane(board), WIDTH, HEIGHT);
     }
 }
