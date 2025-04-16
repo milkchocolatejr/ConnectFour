@@ -65,15 +65,11 @@ public class Server{
 			
 			public void updateClients(Message message) {
 				System.out.println(message);
-				if(message.recipient == 0) {
 					for (ClientThread client : clients) {
 						if (this != client) {
 							client.send(message);
 						}
 					}
-				} else {
-					clients.get(message.recipient).send(message);
-				}
 			}
 
 			public void send(Message message){
@@ -94,7 +90,7 @@ public class Server{
 					System.err.println("Streams not open");
 				}
 				
-				updateClients(new Message("new client on server: client #"+count));
+				updateClients(new Message("new client on server: client #" + count));
 					
 				 while(true) {
 					    try {
@@ -105,7 +101,7 @@ public class Server{
 					    catch(Exception e) {
 							e.printStackTrace();
 					    	System.err.println("OOOOPPs...Something wrong with the socket from client: " + count + "....closing down!");
-					    	updateClients(new Message("Client #"+count+" has left the server!"));
+					    	updateClients(new Message("Client #" + count + " has left the server!"));
 					    	clients.remove(this);
 					    	break;
 					    }

@@ -8,7 +8,7 @@ public class Message implements Serializable {
     public String messageText;
     static final long serialVersionUID = 42L;
 
-
+    public Message(String input) { messageText = input; }
     public Message(boolean isMove, boolean isJoin, int moveCol, String username, String messageText) {
         this.isMove = isMove;
         this.isJoin = isJoin;
@@ -17,6 +17,8 @@ public class Message implements Serializable {
         this.messageText = messageText;
     }
 
-    public toString(){return messageText;}
+    public String toString(){
+        return messageText;
+    }
 }
 
