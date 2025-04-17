@@ -45,7 +45,10 @@ public class SceneBuilder {
         return new Scene(canvas, WIDTH, HEIGHT);
     }
 
-    public static Scene buildGameScreen(Shape board){
+    public static Scene buildGameScreen(Shape board, String displayMessage){
+        if(board == null){
+            board = new Rectangle(WIDTH, HEIGHT);
+        }
         return new Scene(new BorderPane(board), WIDTH, HEIGHT);
     }
 }

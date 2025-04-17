@@ -11,7 +11,6 @@ public class Client extends Thread{
 	ObjectOutputStream out;
 	ObjectInputStream in;
 
-	
 	public void run() {
 
 		try {
@@ -25,8 +24,11 @@ public class Client extends Thread{
 		while(true) {
 			try {
 				Message message = (Message) in.readObject();
+				MessageHandler.handle(message);
 			}
-			catch(Exception e) {}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 	
     }
