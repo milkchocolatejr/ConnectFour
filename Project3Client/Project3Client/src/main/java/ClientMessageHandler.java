@@ -1,5 +1,5 @@
-public static class ClientMessageHandler{
-    public void Handle(Message message){
+public class ClientMessageHandler{
+    public static void handle(Message message){
 
     }
 }

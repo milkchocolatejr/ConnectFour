@@ -11,7 +11,6 @@ import javafx.stage.Stage;
 
 public class GuiClient extends Application{
 
-
 	public static void main(String[] args) {
 		Client clientThread = new Client();
 		clientThread.start();
@@ -23,16 +22,13 @@ public class GuiClient extends Application{
 
 		launch(args);
 
-
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-
 		primaryStage.setScene(SceneBuilder.buildTitleScreen());
 		primaryStage.setTitle("TEST");
 		primaryStage.show();
-		
 	}
 
 }

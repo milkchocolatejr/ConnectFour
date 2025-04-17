@@ -24,10 +24,10 @@ public class Client extends Thread{
 		while(true) {
 			try {
 				Message message = (Message) in.readObject();
-				MessageHandler.handle(message);
+				ClientMessageHandler.handle(message);
 			}
 			catch(Exception e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 	

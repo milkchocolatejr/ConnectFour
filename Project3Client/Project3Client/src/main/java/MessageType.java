@@ -1,3 +1,3 @@
 public enum MessageType {
-    TEXT, JOIN, PLAY
+    TEXT, JOIN, PLAY, ERROR
 }
