@@ -10,8 +10,8 @@ import javafx.scene.text.Text;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class SceneBuilder {
-    private static int WIDTH = 800;
-    private static int HEIGHT = 800;
+    private static final int WIDTH = 800;
+    private static final int HEIGHT = 800;
 
     public static Scene buildTitleScreen(){
         Text title = new Text("CS 342 Connect Four");
