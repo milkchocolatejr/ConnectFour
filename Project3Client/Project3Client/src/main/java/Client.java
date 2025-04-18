@@ -24,7 +24,7 @@ public class Client extends Thread{
 		while(true) {
 			try {
 				Message message = (Message) in.readObject();
-				ClientMessageHandler.handle(message);
+				//ClientMessageHandler.handle(message);
 			}
 			catch(Exception e) {
 				//e.printStackTrace();

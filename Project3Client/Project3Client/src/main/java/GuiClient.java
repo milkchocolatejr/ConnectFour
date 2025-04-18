@@ -27,6 +27,11 @@ public class GuiClient extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setScene(SceneBuilder.buildTitleScreen());
+		/*
+		Extra code to try and test the scene GUI
+		VBox vbox = new VBox(new TextField("Dsads"));
+		Scene scene = new Scene(pane, 500, 400);
+		primaryStage.setScene(scene);*/
 		primaryStage.setTitle("TEST");
 		primaryStage.show();
 	}
