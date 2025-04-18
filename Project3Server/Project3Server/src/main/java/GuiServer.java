@@ -38,8 +38,10 @@ public class GuiServer extends Application{
 			Platform.runLater(()->{
 				switch (data.type){
 					case TEXT:
-						listItems.getItems().add(data.recipient+": "+data.message);
+						listItems.getItems().add(data.username+": "+data.messageText);
 						break;
+
+						--
 					case NEWUSER:
 						listUsers.getItems().add(String.valueOf(data.recipient));
 						listItems.getItems().add(data.recipient + " has joined!");
@@ -56,6 +58,18 @@ public class GuiServer extends Application{
 		listUsers = new ListView<String>();
 		listTextMsgs = new ListView<String>();
 
+		//Example print statements of how it should look when done
+		/*listGames.getItems().add("fdsdsf22");
+		listGames.getItems().add("2124fds2");
+		listGames.getItems().add("hoda");
+
+		listUsers.getItems().add("LaserGhost99");
+		listUsers.getItems().add("FoundArmadillo12");
+
+		listTextMsgs.getItems().add("LaserGhost99: Hello");
+		listTextMsgs.getItems().add("FoundArmadillo12: Hi!");
+		listTextMsgs.getItems().add("LaserGhost99: Nice Weather");*/
+
 		lists = new HBox(listGames,listUsers,listTextMsgs);
 
 
@@ -68,15 +82,16 @@ public class GuiServer extends Application{
 		;
 
 
-		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+		/*primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
 			public void handle(WindowEvent t) {
 				Platform.exit();
 				System.exit(0);
 			}
-		});
-
-		primaryStage.setScene(new Scene(pane, 500, 400));
+		});*/
+		//VBox vbox = new VBox(new TextField("Dsads"));
+		Scene scene = new Scene(pane, 500, 400);
+		primaryStage.setScene(scene);
 		primaryStage.setTitle("ConnectFour - Trenton/AJ Working Title");
 		primaryStage.show();
 		
