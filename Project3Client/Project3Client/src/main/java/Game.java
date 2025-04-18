@@ -24,7 +24,7 @@ public class Game {
         this.playerTwoUser = playerTwo;
         this.displayMessage = "Game has started!";
 
-        this.GUI = SceneBuilder.buildGameScreen(makeBoard(gameState), displayMessage);
+        this.GUI = SceneBuilder.buildGameScreen(this.gameState, displayMessage);
         gameState = new int[BOARD_SIZE][BOARD_SIZE];
         for(int i = 0; i < BOARD_SIZE; i++){
             for(int j = 0; j < BOARD_SIZE; j++){
@@ -51,14 +51,14 @@ public class Game {
             }
         }
 
-        this.GUI = SceneBuilder.buildGameScreen(makeBoard(this.gameState), displayMessage);
+        this.GUI = SceneBuilder.buildGameScreen(this.gameState, displayMessage);
     }
 
     public void fillGame(String playerTwo){
         if(this.playerTwoUser == "") {
             this.playerTwoUser = playerTwo;
             this.displayMessage = "Game has started!";
-            this.GUI = SceneBuilder.buildGameScreen(makeBoard(this.gameState), displayMessage);
+            this.GUI = SceneBuilder.buildGameScreen(this.gameState, displayMessage);
         }
         Start();
     }
@@ -71,7 +71,5 @@ public class Game {
         throw new NotImplementedException();
     }
 
-    private Shape makeBoard(int[][] gameBoard){
-        throw new NotImplementedException();
-    }
+
 }
