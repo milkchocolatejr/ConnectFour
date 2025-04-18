@@ -5,7 +5,7 @@ public class Message implements Serializable {
     public int moveCol;
     public String username;
     public String messageText;
-    static final long serialVersionUID = 42L;
+    public static final long serialVersionUID = 42L;
 
     public Message(String m, MessageType messageType) {
         this.messageText = m;
