@@ -1,9 +1,7 @@
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.net.Socket;
-import java.util.function.Consumer;
 
 public class Client extends Thread{
 	Socket socketClient;
@@ -11,20 +9,30 @@ public class Client extends Thread{
 	ObjectOutputStream out;
 	ObjectInputStream in;
 
-	public void run() {
+	Game currentGame;
+	String username;
+	int gameID;
+	Thread guiThread;
 
+	public Client(){
+		guiThread = new GuiThread();
+	}
+	public void run() {
 		try {
 			socketClient= new Socket("127.0.0.1",5555);
 	    	out = new ObjectOutputStream(socketClient.getOutputStream());
 	    	in = new ObjectInputStream(socketClient.getInputStream());
 	   	 	socketClient.setTcpNoDelay(true);
 		}
-		catch(Exception e) {}
-		
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+
+
 		while(true) {
 			try {
 				Message message = (Message) in.readObject();
-				//ClientMessageHandler.handle(message);
+				ClientMessageHandler.handle(message, guiThread);
 			}
 			catch(Exception e) {
 				//e.printStackTrace();
@@ -32,7 +40,8 @@ public class Client extends Thread{
 		}
 	
     }
-	
+
+
 	public void send(Message data) {
 		try {
 			out.writeObject(data);

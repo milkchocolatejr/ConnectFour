@@ -2,6 +2,8 @@ import javafx.scene.Scene;
 import javafx.scene.shape.Shape;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.lang.String;
+
 public class Game {
     private final int BOARD_SIZE = 7;
     boolean playerOneWinning;

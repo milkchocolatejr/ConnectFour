@@ -22,6 +22,8 @@ public class SceneBuilder {
     private static final int ROWS = 7;
     private static final int COLUMNS = 7;
 
+
+
     public static Scene buildTitleScreen(){
         Text title = new Text("CS 342 Connect Four");
         title.setStyle("-fx-font-weight: bold;" +
