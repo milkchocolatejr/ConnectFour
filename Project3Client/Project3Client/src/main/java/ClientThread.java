@@ -1,9 +1,11 @@
+import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class Client extends Thread{
+public class ClientThread extends Thread{
 	Socket socketClient;
 	
 	ObjectOutputStream out;
@@ -14,8 +16,8 @@ public class Client extends Thread{
 	int gameID;
 	Thread guiThread;
 
-	public Client(){
-		guiThread = new GuiThread();
+	public ClientThread(Stage primaryStage){
+		guiThread = new GuiThread(primaryStage);
 	}
 	public void run() {
 		try {

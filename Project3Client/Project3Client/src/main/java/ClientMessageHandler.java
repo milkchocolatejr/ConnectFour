@@ -20,7 +20,7 @@ public class ClientMessageHandler{
         }
     }
 
-    public synchronized void tryJoinGame(Client clientThread){
+    public synchronized void tryJoinGame(ClientThread clientThread){
 
     }
 }

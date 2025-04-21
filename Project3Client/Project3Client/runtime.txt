@@ -1,0 +1,27 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------------< CS342Spring2024:Project3Client >-------------------
+[INFO] Building Project3Client 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] 6 problems were encountered while building the effective model for org.openjfx:javafx-controls:jar:19.0.2.1 during dependency collection step for project (use -X to see details)
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ Project3Client ---
+[INFO] Deleting /Users/milkchocolatejr/Desktop/ConnectFour/Project3Client/Project3Client/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ Project3Client ---
+[INFO] skip non existing resourceDirectory /Users/milkchocolatejr/Desktop/ConnectFour/Project3Client/Project3Client/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.8.1:compile (default-compile) @ Project3Client ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 8 source files to /Users/milkchocolatejr/Desktop/ConnectFour/Project3Client/Project3Client/target/classes
+[WARNING] /Users/milkchocolatejr/Desktop/ConnectFour/Project3Client/Project3Client/src/main/java/Game.java:[3,46] sun.reflect.generics.reflectiveObjects.NotImplementedException is internal proprietary API and may be removed in a future release
+[WARNING] /Users/milkchocolatejr/Desktop/ConnectFour/Project3Client/Project3Client/src/main/java/Game.java:[73,19] sun.reflect.generics.reflectiveObjects.NotImplementedException is internal proprietary API and may be removed in a future release
+[INFO] 
+[INFO] --- exec:3.5.0:java (default-cli) @ Project3Client ---
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  02:58 min
+[INFO] Finished at: 2025-04-20T19:53:01-05:00
+[INFO] ------------------------------------------------------------------------

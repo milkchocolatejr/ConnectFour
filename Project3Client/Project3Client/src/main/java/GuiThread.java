@@ -4,15 +4,8 @@ public class GuiThread extends Thread {
     ClientGui gui;
     Stage primaryStage;
 
-    public GuiThread(){
+    public GuiThread(Stage primaryStage){
         gui = new ClientGui();
-        primaryStage = new Stage();
-        try{
-            gui.start(primaryStage);
-        }
-        catch(Exception e){
-            throw new RuntimeException(e);
-        }
     }
 
 
