@@ -1,6 +1,7 @@
 import java.io.Serializable;
 
 public class Message implements Serializable {
+
     public MessageType messageType;
     public int moveCol;
     public String username;
@@ -35,6 +36,10 @@ public class Message implements Serializable {
     public Message(String m, MessageType messageType) {
         this.messageText = m;
         this.messageType = messageType;
+    }
+
+    public Message(){
+
     }
 
     /*
