@@ -1,3 +1,9 @@
 public enum MessageType {
-    TEXT, JOIN, PLAY, ERROR
+    TEXT,
+    JOIN,
+    PLAY,
+    DISCONNECT,
+    ERROR,
+    JOIN_ACCEPT,
+    JOIN_DENY,
 }

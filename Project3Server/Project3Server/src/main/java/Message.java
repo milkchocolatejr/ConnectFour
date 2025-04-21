@@ -1,6 +1,7 @@
 import java.io.Serializable;
 
 public class Message implements Serializable {
+
     public MessageType messageType;
     public int moveCol;
     public String username;
@@ -8,33 +9,41 @@ public class Message implements Serializable {
     public static final long serialVersionUID = 42L;
     public int recipient;
 
+    //Connection message - JOIN/DISCONNECT from server
     public Message(int i, boolean connect){
         if(connect) {
             messageType = MessageType.JOIN;
             messageText = "User "+i+" has joined!";
             recipient = i;
         } else {
-            messageType = MessageType.ERROR;
+            messageType = MessageType.DISCONNECT;
             messageText = "User "+i+" has disconnected!";
             recipient = i;
         }
     }
 
+    //Basic Text message to all clients
     public Message(String mess){
         messageType = MessageType.TEXT;
         messageText = mess;
         recipient = -1;
     }
 
+    //Text Message to Direct Recipient
     public Message(int rec, String mess){
         messageType = MessageType.TEXT;
         messageText = mess;
         recipient = rec;
     }
 
+    //Template message of any type
     public Message(String m, MessageType messageType) {
         this.messageText = m;
         this.messageType = messageType;
+    }
+
+    public Message(){
+
     }
 
     /*

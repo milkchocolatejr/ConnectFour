@@ -70,19 +70,6 @@ public class Server{
 				this.count = count;
 			}
 
-			/*
-			Old update clients
-			public void updateClients(Message message) {
-				//Prints out to console toString, or messageText, of the message
-				//that all clients are updated with
-				System.out.println(message);
-					for (ClientThread client : clients) {
-						if (this != client) {
-							client.send(message);
-						}
-					}
-			}*/
-
 			//Current update clients based on Prof. code
 			public void updateClients(Message message) {
 				switch(message.messageType){
@@ -120,14 +107,13 @@ public class Server{
 
 			}
 
-			/*public void send(Message message){
-                try {
-                    out.writeObject(message);
-                } catch (IOException e) {
-					System.err.println("Message send error");
-                    throw new RuntimeException(e);
-                }
-            }*/
+			public void send(Message data) {
+				try {
+					out.writeObject(data);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 
 			public void run(){
 
