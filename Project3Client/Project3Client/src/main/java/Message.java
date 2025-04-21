@@ -5,29 +5,47 @@ public class Message implements Serializable {
     public int moveCol;
     public String username;
     public String messageText;
-    static final long serialVersionUID = 42L;
+    public static final long serialVersionUID = 42L;
+    int recipient;
 
-    //For review: A message containing Game information
-    //public Message(Game currentGame) {}
+    public Message(int i, boolean connect){
+        if(connect) {
+            messageType = MessageType.JOIN;
+            messageText = "User "+i+" has joined!";
+            recipient = i;
+        } else {
+            messageType = MessageType.ERROR;
+            messageText = "User "+i+" has disconnected!";
+            recipient = i;
+        }
+    }
 
-    //A text message, TEXT
+    public Message(String mess){
+        messageType = MessageType.TEXT;
+        messageText = mess;
+        recipient = -1;
+    }
+
+    public Message(int rec, String mess){
+        messageType = MessageType.TEXT;
+        messageText = mess;
+        recipient = rec;
+    }
+
     public Message(String m, MessageType messageType) {
         this.messageText = m;
         this.messageType = messageType;
     }
 
-    //A message for a move made in the game, PLAY
+    /*
+    Edit with AJ
     public Message(int moveCol, String username) {
         this.messageType = MessageType.PLAY;
         this.moveCol = moveCol;
         this.username = username;
         this.messageText = username + "has played in column " + moveCol + ".";
-    }
+    }*/
 
-    //To string for message that just send out the name of the message
-    //Prevents the need to access Message.messageText directly for name
-    //"Game 1 has just started between Player 1 and Player 2"
-    //"Player 1 made a move at ..."
     @Override
     public String toString(){
         return messageText;
