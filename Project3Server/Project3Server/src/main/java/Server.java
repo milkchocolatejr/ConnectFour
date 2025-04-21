@@ -40,7 +40,7 @@ public class Server{
 		    while(true) {
 
 				ClientThread c = new ClientThread(mysocket.accept(), count);
-				//Could include a callback here
+				//Count increases when new clients enter, and callback accepts a message
 				callback.accept(new Message(count,true));
 				clients.add(c);
 				c.start();
