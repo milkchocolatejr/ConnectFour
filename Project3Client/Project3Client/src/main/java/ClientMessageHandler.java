@@ -14,6 +14,8 @@ public class ClientMessageHandler{
             case TEXT:
                 break;
             case ERROR:
+                /*listUsers.getItems().remove(message.recipient);
+                listItems.getItems().add(message.recipient + " has disconnected!");*/
                 break;
             default:
                 throw new IllegalArgumentException("Message type not specified!");

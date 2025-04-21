@@ -6,7 +6,7 @@ public class Message implements Serializable {
     public String username;
     public String messageText;
     public static final long serialVersionUID = 42L;
-    int recipient;
+    public int recipient;
 
     public Message(int i, boolean connect){
         if(connect) {
