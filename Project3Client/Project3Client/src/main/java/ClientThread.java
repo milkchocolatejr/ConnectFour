@@ -14,11 +14,7 @@ public class ClientThread extends Thread{
 	Game currentGame;
 	String username;
 	int gameID;
-	Thread guiThread;
 
-	public ClientThread(Stage primaryStage){
-		guiThread = new GuiThread(primaryStage);
-	}
 	public void run() {
 		try {
 			socketClient= new Socket("127.0.0.1",5555);
@@ -34,7 +30,7 @@ public class ClientThread extends Thread{
 		while(true) {
 			try {
 				Message message = (Message) in.readObject();
-				ClientMessageHandler.handle(message, guiThread);
+				ClientMessageHandler.handle(message);
 			}
 			catch(Exception e) {
 				//e.printStackTrace();

@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 
 public class ClientGui extends Application{
 	ClientThread clientThread;
-	Stage stage;
+	Stage currentStage;
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -14,17 +14,16 @@ public class ClientGui extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		renderTitle(primaryStage, "Welcome to connect four!");
-		ClientThread clientThread = new ClientThread(primaryStage);
-		clientThread.start();
 	}
 
 	public void renderTitle(Stage primaryStage, String title){
 		primaryStage.setScene(SceneBuilder.buildTitleScreen());
 		primaryStage.setTitle(title);
 		primaryStage.show();
+		currentStage = primaryStage;
 	}
 
-	public void renderPlayer(int player){
+	public void renderPlayer(Stage primaryStage, String title){
 
 	}
 

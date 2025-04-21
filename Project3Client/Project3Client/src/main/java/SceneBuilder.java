@@ -1,3 +1,5 @@
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -11,6 +13,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -21,35 +24,36 @@ public class SceneBuilder {
     private static final int ROWS = 7;
     private static final int COLUMNS = 7;
 
-
-
     public static Scene buildTitleScreen(){
-        Text title = new Text("CS 342 Connect Four");
-        title.setStyle("-fx-font-weight: bold;" +
-                "-fx-font-size: 30px;" +
-                "-fx-text-fill: white;");
+        Text title = makeTitleText("Welcome to our \n Connect Four Project! \n SPR 2025 CS 342 ", 70, TextAlignment.CENTER, true);
 
-        Text userPrompt = new Text("Please enter your username: ");
-        Text codePrompt = new Text("Please enter your game code: ");
+        Text userPrompt = makeTitleText("Please enter your username:", 40, null, false);
+        Text codePrompt = makeTitleText("Please enter your game code:", 40, null, false);
 
-        TextField usernameBox = new TextField();
-        TextField codeBox = new TextField();
+        TextField usernameField = makeTitleTextField("Enter username here", 30);
+        TextField codeField = makeTitleTextField("Enter game code here", 30);
 
+        Button loginButton = makeTitleButton("Login", 30);
 
-        Button loginButton = new Button("Login");
-
-        Button randomCodeButton = new Button("Generate Random Code");
+        Button randomCodeButton = makeTitleButton("Generate Random Code", 30);
         randomCodeButton.setOnAction(e -> {
-            codeBox.setText(
-                    Integer.toString(ThreadLocalRandom.current().nextInt(0, 10001))
+            codeField.setText(
+                    Integer.toString(ThreadLocalRandom.current().nextInt(10000, 99999))
             );
         });
 
-        HBox buttonBox = new HBox(randomCodeButton, loginButton);
+        VBox userBox = new VBox(10, userPrompt, usernameField);
+        VBox codeBox = new VBox(10, codePrompt, codeField);
 
-        VBox root = new VBox(title, userPrompt, usernameBox, codePrompt, codeBox, buttonBox);
-        BorderPane canvas = new BorderPane();
+        HBox buttonBox = new HBox(10, randomCodeButton, loginButton);
+        buttonBox.setAlignment(Pos.CENTER);
+
+        VBox root = new VBox(60, title, userBox, codeBox, buttonBox);
+        BorderPane.setMargin(root, new Insets(25,25,25,25));
+
+        BorderPane canvas = new BorderPane(root);
         canvas.setPrefSize(WIDTH - 100, HEIGHT - 100);
+        canvas.setStyle("-fx-background-color: linear-gradient(to bottom right, black, darkgoldenrod);");
         canvas.setCenter(root);
 
         return new Scene(canvas, WIDTH, HEIGHT);
@@ -118,5 +122,48 @@ public class SceneBuilder {
             }
         }
         return board;
+    }
+
+    private static Button makeTitleButton(String text, int fontSize){
+        Button button = new Button(text);
+        button.setAlignment(javafx.geometry.Pos.CENTER);
+        button.setStyle(
+                "-fx-background-color: white;"+
+                "-fx-text-fill: #000000;" +
+                "-fx-background-color: #dda428; " +
+                "-fx-font-size: " + fontSize + "px;" +
+                "-fx-background-radius: 30px; " +
+                "-fx-border-radius: 30px; " +
+                "-fx-padding: 10px 20px; " +
+                "-fx-font-weight: bold; " +
+                "-fx-min-width: 200px; " +
+                "-fx-min-height: 50px; " +
+                "-fx-border-color: #e68a00; " +
+                "-fx-border-width: 2px; " +
+                "-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 4, 4);"
+        );
+        button.setMaxWidth((int)(WIDTH / 2) - 20);
+        return button;
+    }
+
+    private static Text makeTitleText(String text, int fontSize, TextAlignment alignment, boolean centered){
+        Text t = new Text(text);
+        t.setStyle(
+                "-fx-font-size: " + fontSize + "px;" +
+                "-fx-fill: #FFFFFF;" +
+                "-fx-stroke: #000000;" +
+                "-fx-stroke-width: 2px;" +
+                ((centered) ? "-fx-text-alignment: : center;" : "")
+        );
+        t.setTextAlignment((alignment == null) ? TextAlignment.LEFT : alignment);
+        return t;
+    }
+
+    private static TextField makeTitleTextField(String text, int fontSize){
+        TextField t = new TextField(text);
+        t.setStyle(
+                "-fx-font-size: " + fontSize + "px;"
+        );
+        return t;
     }
 }
