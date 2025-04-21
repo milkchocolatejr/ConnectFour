@@ -17,6 +17,7 @@ public class Game {
     Scene GUI;
     int[][] gameState;
 
+
     public Game(String playerOne, String playerTwo, int gameID) {
         this.playerOneWinning = false;
         this.playerTwoWinning = false;

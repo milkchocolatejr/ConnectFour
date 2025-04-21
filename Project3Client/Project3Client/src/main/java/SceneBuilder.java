@@ -1,3 +1,4 @@
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -14,6 +15,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -24,7 +26,7 @@ public class SceneBuilder {
     private static final int ROWS = 7;
     private static final int COLUMNS = 7;
 
-    public static Scene buildTitleScreen(){
+    public static Scene buildTitleScreen(Stage primaryStage) {
         Text title = makeTitleText("Welcome to our \n Connect Four Project! \n SPR 2025 CS 342 ", 70, TextAlignment.CENTER, true);
 
         Text userPrompt = makeTitleText("Please enter your username:", 40, null, false);
@@ -34,6 +36,22 @@ public class SceneBuilder {
         TextField codeField = makeTitleTextField("Enter game code here", 30);
 
         Button loginButton = makeTitleButton("Login", 30);
+        loginButton.setOnAction(e -> {
+            String username = usernameField.getText();
+            int gameCode = Integer.parseInt(codeField.getText());
+
+            if(gameCode < 10000 || gameCode > 99999){
+                codeField.setText("INVALID GAME CODE: PLEASE ENTER A 5 DIGIT INTEGER!");
+                return;
+            }
+
+            Message message = new Message();
+            message.messageText = username;
+            message.messageType = MessageType.JOIN;
+
+            ClientMessageHandler.send(message, primaryStage);
+
+        });
 
         Button randomCodeButton = makeTitleButton("Generate Random Code", 30);
         randomCodeButton.setOnAction(e -> {

@@ -11,32 +11,43 @@ public class ClientThread extends Thread{
 	ObjectOutputStream out;
 	ObjectInputStream in;
 
-	Game currentGame;
-	String username;
-	int gameID;
+	Message requestMessage, responseMessage;
+	Stage currentStage;
+
+
+	public ClientThread(Message request, Message response, Stage stage){
+		this.responseMessage = response;
+		this.requestMessage = request;
+		this.currentStage = stage;
+	}
 
 	public void run() {
 		try {
 			socketClient= new Socket("127.0.0.1",5555);
-	    	out = new ObjectOutputStream(socketClient.getOutputStream());
-	    	in = new ObjectInputStream(socketClient.getInputStream());
-	   	 	socketClient.setTcpNoDelay(true);
+			out = new ObjectOutputStream(socketClient.getOutputStream());
+			in = new ObjectInputStream(socketClient.getInputStream());
+			socketClient.setTcpNoDelay(true);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
 
-
 		while(true) {
 			try {
-				Message message = (Message) in.readObject();
-				ClientMessageHandler.handle(message);
+				//Prepare request
+				send(this.requestMessage);
+
+				//Read response
+				Message responseMessage = (Message) in.readObject();
+
+				//Handle response
+				ClientMessageHandler.handle(responseMessage, this.currentStage);
 			}
 			catch(Exception e) {
 				//e.printStackTrace();
 			}
 		}
-	
+
     }
 
 
