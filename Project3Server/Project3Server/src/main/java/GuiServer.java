@@ -24,34 +24,29 @@ public class GuiServer extends Application{
 
 	HBox lists;
 
-	public static void main(String[] args) {
-		Server serv = new Server();
-		launch(args);
-
-	}
+	public static void main(String[] args) { launch(args); }
+	
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		//Place where the Server GUI will be filled with information sourced from
 		//various types of messages: GAME, NEWUSER, and TEXT
-		/*serverConnection = new Server(data->{
+		serverConnection = new Server(data->{
 			Platform.runLater(()->{
-				switch (data.type){
+				switch (data.messageType){
 					case TEXT:
-						listItems.getItems().add(data.username+": "+data.messageText);
+						listTextMsgs.getItems().add(data.username+": "+data.messageText);
 						break;
-
-						--
-					case NEWUSER:
+					case JOIN:
 						listUsers.getItems().add(String.valueOf(data.recipient));
-						listItems.getItems().add(data.recipient + " has joined!");
+						listTextMsgs.getItems().add(data.recipient + " has joined!");
 						break;
-					case DISCONNECT:
+					case ERROR:
 						listUsers.getItems().remove(String.valueOf(data.recipient));
-						listItems.getItems().add(data.recipient + " has disconnected!");
+						listTextMsgs.getItems().add(data.recipient + " has disconnected!");
 				}
 			});
-		});*/
+		});
 
 
 		listGames = new ListView<String>();
@@ -59,6 +54,10 @@ public class GuiServer extends Application{
 		listTextMsgs = new ListView<String>();
 
 		//Example print statements of how it should look when done
+		//Things are correctly printed out to server GUI
+
+		//Now focus on adding functionality
+
 		/*listGames.getItems().add("fdsdsf22");
 		listGames.getItems().add("2124fds2");
 		listGames.getItems().add("hoda");
@@ -82,14 +81,15 @@ public class GuiServer extends Application{
 		;
 
 
-		/*primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			@Override
 			public void handle(WindowEvent t) {
 				Platform.exit();
 				System.exit(0);
 			}
-		});*/
-		//VBox vbox = new VBox(new TextField("Dsads"));
+		});
+
+
 		Scene scene = new Scene(pane, 500, 400);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("ConnectFour - Trenton/AJ Working Title");

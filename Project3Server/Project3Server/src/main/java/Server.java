@@ -17,10 +17,12 @@ public class Server{
 	int count = 1;
 	ArrayList<ClientThread> clients = new ArrayList<ClientThread>();
 	TheServer server;
+	private Consumer<Message> callback;
 
 
-	Server(){
+	Server(Consumer<Message> call){
 
+		callback = call;
 		server = new TheServer();
 		server.start();
 	}
@@ -39,6 +41,7 @@ public class Server{
 
 				ClientThread c = new ClientThread(mysocket.accept(), count);
 				//Could include a callback here
+				callback.accept(new Message(count,true));
 				clients.add(c);
 				c.start();
 
@@ -47,7 +50,7 @@ public class Server{
 			    }
 			} catch(Exception e) {
 				//Thrown exception for if the server doesn't launch for some reason
-					System.err.println("Server did not launch");
+				callback.accept(new Message("Server did not launch"));
 				}
 			}
 		}
@@ -67,6 +70,8 @@ public class Server{
 				this.count = count;
 			}
 
+			/*
+			Old update clients
 			public void updateClients(Message message) {
 				//Prints out to console toString, or messageText, of the message
 				//that all clients are updated with
@@ -76,16 +81,54 @@ public class Server{
 							client.send(message);
 						}
 					}
+			}*/
+
+			//Current update clients based on Prof. code
+			public void updateClients(Message message) {
+				switch(message.messageType){
+					case TEXT:
+						for(ClientThread t: clients){
+							if(message.recipient==-1 || message.recipient==t.count ) {
+								try {
+									t.out.writeObject(message);
+								} catch (Exception e) {
+									System.err.println("New User Error");
+								}
+							}
+						}
+						break;
+					case JOIN:
+						for(ClientThread t : clients) {
+							if(this != t) {
+								try {
+									t.out.writeObject(message);
+								} catch (Exception e) {
+									System.err.println("New User Error");
+								}
+							}
+						}
+						break;
+					case ERROR:
+						for(ClientThread t : clients) {
+							try {
+								t.out.writeObject(message);
+							} catch (Exception e) {
+								System.err.println("New User Error");
+							}
+						}
+				}
+
 			}
 
-			public void send(Message message){
+			/*public void send(Message message){
                 try {
                     out.writeObject(message);
                 } catch (IOException e) {
 					System.err.println("Message send error");
                     throw new RuntimeException(e);
                 }
-            }
+            }*/
+
 			public void run(){
 
 				try {
@@ -97,7 +140,7 @@ public class Server{
 					System.err.println("Streams not open");
 				}
 
-				//updateClients(new Message("new client on server: client #" + count));
+				updateClients(new Message(count,true));
 
 				 while(true) {
 					    try {
@@ -107,10 +150,12 @@ public class Server{
 					    	}
 					    catch(Exception e) {
 							e.printStackTrace();
-					    	System.err.println("OOOOPPs...Something wrong with the socket from client: " + count + "....closing down!");
-					    	//updateClients(new Message("Client #" + count + " has left the server!"));
-					    	clients.remove(this);
-					    	break;
+							Message discon = new Message(count, false);
+							System.err.println("OOOOPPs...Something wrong with the socket from client: " + count + "....closing down!");
+							callback.accept(discon);
+							updateClients(discon);
+							clients.remove(this);
+							break;
 					    }
 				 }
 			}//end of run
