@@ -15,8 +15,8 @@ public class ClientThread extends Thread{
 	Stage currentStage;
 
 
-	public ClientThread(Message request, Message response, Stage stage){
-		this.responseMessage = response;
+	public ClientThread(Message request, Stage stage){
+		this.responseMessage = null;
 		this.requestMessage = request;
 		this.currentStage = stage;
 	}
@@ -40,6 +40,9 @@ public class ClientThread extends Thread{
 
 				//Read response
 				Message responseMessage = (Message) in.readObject();
+
+				System.out.println("GOT MESSAGE FROM SERVER");
+				System.out.println(responseMessage.toString());
 
 				//Handle response
 				ClientMessageHandler.handle(responseMessage, this.currentStage);

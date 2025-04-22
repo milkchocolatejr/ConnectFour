@@ -51,7 +51,6 @@ public class SceneBuilder {
             message.messageType = MessageType.JOIN;
 
             ClientMessageHandler.send(message, primaryStage);
-
         });
 
         Button randomCodeButton = makeTitleButton("Generate Random Code", 30);

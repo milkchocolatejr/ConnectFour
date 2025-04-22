@@ -20,22 +20,18 @@ public class MessageHandler {
                 }
 
 
-                boolean gameFilled = false;
                 for(Game game : server.getGames()){
                     if(game.gameID == Integer.parseInt(message.messageText)){
-                        gameFilled = true;
                         game.fillGame(message.username);
                         return game;
                     }
                 }
                 Game g = new Game(message.username, Integer.parseInt(message.messageText));
 
-                if(!gameFilled){
-                    System.out.println("*************");
-                    System.out.println(message.messageText);
-                    System.out.println("*************");
-                    server.addGame(g);
-                }
+                System.out.println("*************");
+                System.out.println(message.messageText);
+                System.out.println("*************");
+                server.addGame(g);
 
                 response.recipient = message.username;
                 response.username = "SERVER";

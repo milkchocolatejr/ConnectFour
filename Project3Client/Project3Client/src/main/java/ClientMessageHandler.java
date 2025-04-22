@@ -6,8 +6,20 @@ public class ClientMessageHandler{
         if(message == null || currentStage == null){
             Platform.runLater(() -> {
                 switch(message.messageType){
+                    case TEXT:
+                        System.out.println("TEXT MESSAGE");
+                        break;
                     case JOIN:
                         System.out.println("JOINED SERVER");
+                        break;
+                    case PLAY:
+                        System.out.println("PLAYING SERVER");
+                        break;
+                    case DISCONNECT:
+                        System.out.println("DISCONNECTED SERVER");
+                        break;
+                    case ERROR:
+                        System.out.println("ERROR MESSAGE");
                         break;
                     case JOIN_ACCEPT:
                         System.out.println("JOIN ACCEPTED SERVER");
@@ -15,6 +27,8 @@ public class ClientMessageHandler{
                     case JOIN_DENY:
                         System.out.println("JOIN DENIED SERVER");
                         break;
+                    default:
+                        System.out.println("UNKNOWN MESSAGE");
                 }
 
             });
@@ -26,14 +40,8 @@ public class ClientMessageHandler{
         if(request == null){
             return;
         }
-        Message response = null;
-        try {
-            ClientThread t1 = new ClientThread(request, response, stage);
-            t1.start();
-            t1.join();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        ClientThread t1 = new ClientThread(request, stage);
+        t1.start();
     }
 
     public synchronized void tryJoinGame(ClientThread clientThread){
