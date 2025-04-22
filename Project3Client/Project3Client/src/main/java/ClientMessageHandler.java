@@ -29,7 +29,9 @@ public class ClientMessageHandler{
                         );
                         break;
                     case JOIN_DENY:
-                        System.out.println("JOIN DENIED SERVER");
+                        currentStage.setScene(
+                                SceneBuilder.buildTitleScreen(currentStage)
+                        );
                         break;
                     default:
                         System.out.println("UNKNOWN MESSAGE");

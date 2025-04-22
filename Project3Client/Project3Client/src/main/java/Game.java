@@ -1,8 +1,7 @@
-import javafx.scene.Scene;
-import javafx.scene.shape.Shape;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.lang.String;
+import java.util.Objects;
 
 public class Game {
     private final int BOARD_SIZE = 7;
@@ -54,7 +53,7 @@ public class Game {
     }
 
     public void fillGame(String playerTwo){
-        if(this.playerTwoUser == "") {
+        if(Objects.equals(this.playerTwoUser, "")) {
             this.playerTwoUser = playerTwo;
             this.displayMessage = "Game has started!";
         }

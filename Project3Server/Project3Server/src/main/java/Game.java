@@ -3,6 +3,7 @@ import javafx.scene.shape.Shape;
 //import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.lang.String;
+import java.util.Objects;
 
 public class Game {
     private final int BOARD_SIZE = 7;
@@ -15,6 +16,7 @@ public class Game {
     String displayMessage;
     int gameID;
     Scene GUI;
+    boolean started;
     int[][] gameState;
 
 
@@ -58,16 +60,19 @@ public class Game {
     }
 
     public void fillGame(String playerTwo){
-        if(this.playerTwoUser == "") {
+        if(!this.started) {
             this.playerTwoUser = playerTwo;
             this.displayMessage = "Game has started!";
             this.GUI = SceneBuilder.buildGameScreen(this);
+            Start();
         }
-        Start();
     }
 
     private void Start(){
-
+        if(this.started){
+            throw new RuntimeException("Game has already started!");
+        }
+        this.started = true;
     }
 
     /*public boolean Play(int col){
