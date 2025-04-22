@@ -41,11 +41,6 @@ public class ClientThread extends Thread{
 				//Read response
 				Message responseMessage = (Message) in.readObject();
 
-				System.out.println("GOT MESSAGE FROM SERVER");
-				System.out.println(responseMessage.recipient);
-				System.out.println(responseMessage.username);
-				System.out.println(responseMessage.messageType);
-
 				//Handle response
 				ClientMessageHandler.handle(responseMessage, this.currentStage);
 			}

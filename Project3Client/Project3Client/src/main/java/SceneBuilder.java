@@ -78,10 +78,10 @@ public class SceneBuilder {
     }
 
     public static Scene buildGameScreen(Game game){
-        Text gameStateText = new Text("GAME: " + game.gameID +  " | " + (game.playerOneTurn ? game.playerOneUser : game.playerTwoUser) + "'s turn");
+        Text gameStateText = new Text("GAME: " + game.gameID);// +  " | " + (game.playerOneTurn ? game.playerOneUser : game.playerTwoUser) + "'s turn");
         Shape board = makeBoard(game.gameState);
 
-        VBox root = new VBox(board);
+        VBox root = new VBox(gameStateText, board);
         BorderPane canvas = new BorderPane();
         canvas.setPrefSize(WIDTH, HEIGHT);
         canvas.setCenter(root);
@@ -110,7 +110,7 @@ public class SceneBuilder {
                 Color color;
                 switch(gameBoard[x][y]){
                     case 0:
-                        color = Color.WHITE;
+                        color = Color.GREEN;
                         break;
                     case 1:
                         color = Color.RED;
