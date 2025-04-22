@@ -54,7 +54,7 @@ public class MessageHandler {
         }
         //Unnamed client
         for(Server.ClientThread c : server.clients){
-            if(Objects.equals(c.username, c.getName())){
+            if(Objects.equals(c.username, "")){
                 c.username = response.recipient;
                 c.send(response);
                 return;
