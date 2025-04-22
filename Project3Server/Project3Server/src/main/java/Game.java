@@ -1,6 +1,6 @@
 import javafx.scene.Scene;
 import javafx.scene.shape.Shape;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+//import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.lang.String;
 
@@ -70,9 +70,9 @@ public class Game {
 
     }
 
-    public boolean Play(int col){
+    /*public boolean Play(int col){
         throw new NotImplementedException();
-    }
+    }*/
 
 
 }
