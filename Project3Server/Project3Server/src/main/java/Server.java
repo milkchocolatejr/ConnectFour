@@ -83,7 +83,6 @@ public class Server{
 			}
 			catch(Exception e) {
 				//Thrown exception for if the server doesn't launch for some reason
-				callback.accept(new Message("Server did not launch"));
 			}
 		}
 	}
@@ -138,6 +137,11 @@ public class Server{
 					    	Message data = (Message) in.readObject();
 							System.out.println("GOT THE DATA!");
 							Game g = MessageHandler.handle(data, stage, server);
+							if(g == null){
+								Message m = new Message();
+								m.messageType = MessageType.JOIN_ACCEPT;
+								callback.accept(m);
+							}
 						}
 					    catch(Exception e) {
 							e.printStackTrace();

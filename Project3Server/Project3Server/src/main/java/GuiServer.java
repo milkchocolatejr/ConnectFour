@@ -33,7 +33,7 @@ public class GuiServer extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		serverConnection = new Server(data->{
 			Platform.runLater(()->{
-				MessageHandler.send(data, serverConnection);
+				MessageHandler.updateStage(data, serverConnection, primaryStage);
 			});
 		}, primaryStage);
 
@@ -43,10 +43,12 @@ public class GuiServer extends Application{
 
 		for(Game g: serverConnection.getGames()){
 			listGameCodes.getItems().add(String.valueOf(g.gameID));
+			listUsers.getItems().add(String.valueOf(g.playerOneUser));
+			if(g.playerTwoUser != ""){
+				listGameCodes.getItems().add(String.valueOf(g.gameID));
+				listUsers.getItems().add(String.valueOf(g.playerTwoUser));
+			}
 		}
-
-		serverConnection.getUsers().forEach(user->{listUsers.getItems().add(user);});
-
 		primaryStage.setScene(SceneBuilder.buildInitScreen(primaryStage, listGameCodes, listUsers));
 		primaryStage.setTitle("ConnectFour - Trenton/AJ Working Title");
 		primaryStage.show();
