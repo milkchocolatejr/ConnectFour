@@ -5,6 +5,7 @@ import javafx.stage.Stage;
 public class ClientGui extends Application{
 	ClientThread clientThread;
 	Stage currentStage;
+	Game game;
 	public static void main(String[] args) {
 		launch(args);
 	}

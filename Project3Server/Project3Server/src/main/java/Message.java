@@ -6,19 +6,19 @@ public class Message implements Serializable {
     public int moveCol;
     public String username;
     public String messageText;
-    public static final long serialVersionUID = 42L;
-    public int recipient;
+    private static final long serialVersionUID = 42L;
+    public String recipient;
 
     //Connection message - JOIN/DISCONNECT from server
-    public Message(int i, boolean connect){
+    public Message(String s, boolean connect){
         if(connect) {
             messageType = MessageType.JOIN;
-            messageText = "User "+i+" has joined!";
-            recipient = i;
+            messageText = "User '" +s+"' has joined!";
+            recipient = s;
         } else {
             messageType = MessageType.DISCONNECT;
-            messageText = "User "+i+" has disconnected!";
-            recipient = i;
+            messageText = "User '"+s+"' has disconnected!";
+            recipient = s;
         }
     }
 
@@ -26,11 +26,10 @@ public class Message implements Serializable {
     public Message(String mess){
         messageType = MessageType.TEXT;
         messageText = mess;
-        recipient = -1;
     }
 
     //Text Message to Direct Recipient
-    public Message(int rec, String mess){
+    public Message(String rec, String mess){
         messageType = MessageType.TEXT;
         messageText = mess;
         recipient = rec;

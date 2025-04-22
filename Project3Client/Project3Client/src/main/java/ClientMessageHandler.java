@@ -4,7 +4,20 @@ import javafx.stage.Stage;
 public class ClientMessageHandler{
     public static void handle(Message message, Stage currentStage){
         if(message == null || currentStage == null){
-            return;
+            Platform.runLater(() -> {
+                switch(message.messageType){
+                    case JOIN:
+                        System.out.println("JOINED SERVER");
+                        break;
+                    case JOIN_ACCEPT:
+                        System.out.println("JOIN ACCEPTED SERVER");
+                        break;
+                    case JOIN_DENY:
+                        System.out.println("JOIN DENIED SERVER");
+                        break;
+                }
+
+            });
         }
 
     }

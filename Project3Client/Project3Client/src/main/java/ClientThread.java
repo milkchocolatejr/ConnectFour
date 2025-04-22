@@ -30,6 +30,7 @@ public class ClientThread extends Thread{
 		}
 		catch(Exception e) {
 			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 
 		while(true) {

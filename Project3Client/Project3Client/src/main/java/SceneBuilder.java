@@ -46,7 +46,8 @@ public class SceneBuilder {
             }
 
             Message message = new Message();
-            message.messageText = username;
+            message.username = username;
+            message.messageText = Integer.toString(gameCode);
             message.messageType = MessageType.JOIN;
 
             ClientMessageHandler.send(message, primaryStage);
