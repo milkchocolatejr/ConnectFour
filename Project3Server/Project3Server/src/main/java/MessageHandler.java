@@ -1,49 +1,68 @@
 import javafx.stage.Stage;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MessageHandler {
-    public static MessageHandlerResponse handle(Message message, ArrayList<Game> gameList, Stage stage) {
+    public static Game handle(Message message, Stage stage, Server server) {
         Message response = new Message();
         switch(message.messageType){
             case JOIN:
                 boolean duplicate = false;
-                for(Game game : gameList){
+                for(Game game : server.getGames()){
                     if(game.playerOneUser == message.username || game.playerTwoUser == message.username){
                         duplicate = true;
                     }
                 }
                 response.messageType = duplicate ? MessageType.JOIN_DENY : MessageType.JOIN_ACCEPT;
                 if(duplicate){
-                    send(response);
-                    return new MessageHandlerResponse(gameList, response);
+                    send(response, server);
+                    return null;
                 }
 
 
-                boolean gameCreated = false;
-                for(Game game : gameList){
+                boolean gameFilled = false;
+                for(Game game : server.getGames()){
                     if(game.gameID == Integer.parseInt(message.messageText)){
-                        gameCreated = true;
+                        gameFilled = true;
                         game.fillGame(message.username);
+                        return game;
                     }
                 }
+                Game g = new Game(message.username, Integer.parseInt(message.messageText));
 
-                if(!gameCreated){
+                if(!gameFilled){
                     System.out.println("*************");
                     System.out.println(message.messageText);
                     System.out.println("*************");
-                    gameList.add(new Game(message.username, Integer.parseInt(message.messageText)));
+                    server.addGame(g);
                 }
 
                 response.recipient = message.username;
                 response.username = "SERVER";
-                break;
+                send(response, server);
+                return g;
             case PLAY:
                 System.out.println("PLAY");
                 break;
         }
-        return new MessageHandlerResponse(gameList, response);
+        return null;
     }
-    public static void send(Message message) {
-
+    public static void send(Message response, Server server) {
+        System.out.println("SEND HIT!");
+        //Named client
+        for(Server.ClientThread c: server.clients){
+            if(Objects.equals(c.username, response.recipient)){
+                c.send(response);
+                return;
+            }
+        }
+        //Unnamed client
+        for(Server.ClientThread c : server.clients){
+            if(Objects.equals(c.username, c.getName())){
+                c.username = response.recipient;
+                c.send(response);
+                return;
+            }
+        }
     }
 }

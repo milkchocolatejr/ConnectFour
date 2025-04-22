@@ -172,7 +172,7 @@ public class SceneBuilder {
                 "-fx-fill: #FFFFFF;" +
                 "-fx-stroke: #000000;" +
                 "-fx-stroke-width: 2px;" +
-                ((centered) ? "-fx-text-alignment: : center;" : "")
+                ((centered) ? "-fx-text-alignment: center;" : "")
         );
         t.setTextAlignment((alignment == null) ? TextAlignment.LEFT : alignment);
         return t;

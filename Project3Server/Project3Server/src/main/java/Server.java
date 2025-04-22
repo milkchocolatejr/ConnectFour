@@ -5,11 +5,13 @@ import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 
 import javafx.application.Platform;
 import javafx.scene.control.ListView;
+import javafx.stage.Stage;
 
 
 public class Server{
@@ -18,37 +20,73 @@ public class Server{
 	ArrayList<ClientThread> clients = new ArrayList<ClientThread>();
 	TheServer server;
 	private final Consumer<Message> callback;
+	Stage stage;
 
-	Server(Consumer<Message> call){
+
+	Server(Consumer<Message> call, Stage stage){
 		callback = call;
-		server = new TheServer();
+		server = new TheServer(this);
 		server.start();
+		this.stage = stage;
 	}
 
 
-	public class TheServer extends Thread{
+	public void addGame(Game game){
+		for(ClientThread c : clients){
+			if(Objects.equals(game.playerOneUser, c.username)){
+				c.setGame(game);
+			}
+		}
+	}
+	public ArrayList<Game> getGames(){
+		ArrayList<Game> games = new ArrayList<>();
+		ArrayList<Integer> seenIDs = new ArrayList<>();
+		for(ClientThread c : clients){
+			if(c.game == null){
+				continue;
+			}
+			if(!seenIDs.contains(c.game.gameID)){
+				games.add(c.game);
+				seenIDs.add(c.game.gameID);
+			}
+		}
+		return games;
+	}
 
+	public ArrayList<String> getUsers(){
+		ArrayList<String> users = new ArrayList<>();
+		for(ClientThread c : clients){
+			if(!users.contains(c.username)){
+				users.add(c.username);
+			}
+		}
+		return users;
+	}
+
+	public class TheServer extends Thread{
+		Server server;
+
+		public TheServer(Server server){
+			this.server = server;
+		}
 		public void run() {
 			//How the server will first accept a client
 			try(ServerSocket mysocket = new ServerSocket(5555)){
 				//Prints out to console, and soon for GUI, that the server is waiting for a client
-
-		    while(true) {
-
-				ClientThread c = new ClientThread(mysocket.accept(), count);
-				//Count increases when new clients enter, and callback accepts a message
-				clients.add(c);
-				c.start();
-
-				count++;
-
-			    }
-			} catch(Exception e) {
-				//Thrown exception for if the server doesn't launch for some reason
-					callback.accept(new Message("Server did not launch"));
+				while(true) {
+					ClientThread c = new ClientThread(mysocket.accept(), count, "", null, stage, server);
+					//Count increases when new clients enter, and callback accepts a message
+					clients.add(c);
+					c.start();
+					count++;
 				}
 			}
+			catch(Exception e) {
+				//Thrown exception for if the server doesn't launch for some reason
+				callback.accept(new Message("Server did not launch"));
+			}
 		}
+	}
 
 
 		class ClientThread extends Thread{
@@ -57,47 +95,24 @@ public class Server{
 			int count;
 			ObjectInputStream in;
 			ObjectOutputStream out;
+			String username;
+			Game game;
+			Stage stage;
+			Server server;
 
 			//Client Thread class constructor that's
 			//the socket connection and the count # of clients, Ex. Client #1, and Client #2
-			ClientThread(Socket s, int count){
+			ClientThread(Socket s, int count, String username, Game game, Stage stage, Server server){
 				this.connection = s;
 				this.count = count;
+				this.username = username;
+				this.game = game;
+				this.stage = stage;
+				this.server = server;
 			}
 
-			//Current update clients based on Prof. code
-			public void updateClients(Message message) {
-//				switch(message.messageType){
-//					case TEXT:
-//						for(ClientThread t: clients){
-//							try {
-//								t.out.writeObject(message);
-//							}
-//							catch(Exception e) {
-//								e.printStackTrace();
-//							}
-//						}
-//						break;
-//					case JOIN:
-//						for(ClientThread t : clients) {
-//							if(this != t) {
-//								try {
-//									t.out.writeObject(message);
-//								} catch (Exception e) {
-//									System.err.println("New User Error");
-//								}
-//							}
-//						}
-//						break;
-//					case ERROR:
-//						for(ClientThread t : clients) {
-//							try {
-//								t.out.writeObject(message);
-//							} catch (Exception e) {
-//								System.err.println("New User Error");
-//							}
-//						}
-//				}
+			public void setGame(Game game){
+				this.game = game;
 			}
 
 			public void send(Message data) {
@@ -109,7 +124,6 @@ public class Server{
 			}
 
 			public void run(){
-
 				try {
 					in = new ObjectInputStream(connection.getInputStream());
 					out = new ObjectOutputStream(connection.getOutputStream());
@@ -122,16 +136,11 @@ public class Server{
 				 while(true) {
 					    try {
 					    	Message data = (Message) in.readObject();
-					    	updateClients(data);
+							System.out.println("GOT THE DATA!");
+							Game g = MessageHandler.handle(data, stage, server);
 						}
 					    catch(Exception e) {
 							e.printStackTrace();
-							Message discon = new Message();
-							discon.messageType = MessageType.ERROR;
-							System.err.println("OOOOPPs...Something wrong with the socket from client: " + count + "....closing down!");
-							callback.accept(discon);
-							updateClients(discon);
-							clients.remove(this);
 							break;
 					    }
 				 }

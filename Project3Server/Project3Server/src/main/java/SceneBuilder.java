@@ -24,9 +24,7 @@ public class SceneBuilder {
     private static final int ROWS = 7;
     private static final int COLUMNS = 7;
     public static Scene buildInitScreen(Stage stage, ListView<String> listGames, ListView<String> listUsers){
-
         HBox lists = new HBox(listGames,listUsers);
-
 
         BorderPane pane = new BorderPane();
         pane.setPadding(new Insets(70));
