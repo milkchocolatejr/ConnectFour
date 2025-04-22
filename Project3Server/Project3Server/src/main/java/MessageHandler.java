@@ -35,6 +35,7 @@ public class MessageHandler {
 
                 response.recipient = message.username;
                 response.username = "SERVER";
+                response.messageText = message.messageText;
                 send(response, server);
                 return g;
             case PLAY:

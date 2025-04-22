@@ -14,7 +14,6 @@ public class Game {
     String playerTwoUser;
     String displayMessage;
     int gameID;
-    Scene GUI;
     int[][] gameState;
 
 
@@ -27,7 +26,6 @@ public class Game {
         this.playerTwoUser = playerTwo;
         this.displayMessage = "Game has started!";
 
-        this.GUI = SceneBuilder.buildGameScreen(this);
         gameState = new int[BOARD_SIZE][BOARD_SIZE];
         for(int i = 0; i < BOARD_SIZE; i++){
             for(int j = 0; j < BOARD_SIZE; j++){
@@ -53,15 +51,12 @@ public class Game {
                 gameState[i][j] = 0;
             }
         }
-
-        this.GUI = SceneBuilder.buildGameScreen(this);
     }
 
     public void fillGame(String playerTwo){
         if(this.playerTwoUser == "") {
             this.playerTwoUser = playerTwo;
             this.displayMessage = "Game has started!";
-            this.GUI = SceneBuilder.buildGameScreen(this);
         }
         Start();
     }

@@ -1,9 +1,9 @@
 import javafx.application.Platform;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class ClientMessageHandler{
     public static void handle(Message message, Stage currentStage){
-        if(message == null || currentStage == null){
             Platform.runLater(() -> {
                 switch(message.messageType){
                     case TEXT:
@@ -22,7 +22,11 @@ public class ClientMessageHandler{
                         System.out.println("ERROR MESSAGE");
                         break;
                     case JOIN_ACCEPT:
-                        System.out.println("JOIN ACCEPTED SERVER");
+                        currentStage.setScene(
+                            SceneBuilder.buildGameScreen(
+                                new Game(message.recipient, Integer.parseInt(message.messageText))
+                            )
+                        );
                         break;
                     case JOIN_DENY:
                         System.out.println("JOIN DENIED SERVER");
@@ -32,8 +36,6 @@ public class ClientMessageHandler{
                 }
 
             });
-        }
-
     }
 
     public static void send(Message request, Stage stage){
