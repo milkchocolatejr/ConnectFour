@@ -128,39 +128,30 @@ public class Server{
 					in = new ObjectInputStream(connection.getInputStream());
 					out = new ObjectOutputStream(connection.getOutputStream());
 					connection.setTcpNoDelay(true);
+					Message data = (Message) in.readObject();
+					System.out.println("SERVER GOT :" + data.messageType);
+
+					Game g = MessageHandler.handle(data, stage, server);
+
+					switch(data.messageType){
+						case JOIN:
+							if(g != null){
+								Message m = new Message();
+								m.messageType = MessageType.JOIN_ACCEPT;
+								callback.accept(m);
+								setGame(g);
+							}
+							break;
+						case PLAY:
+							setGame(g);
+							break;
+					}
+
+
 				}
 				catch(Exception e) {
 					System.err.println("Streams not open");
 				}
-
-				 while(true) {
-					    try {
-					    	Message data = (Message) in.readObject();
-							System.out.println("SERVER GOT :" + data.messageType);
-
-							Game g = MessageHandler.handle(data, stage, server);
-
-							switch(data.messageType){
-								case JOIN:
-									if(g != null){
-										Message m = new Message();
-										m.messageType = MessageType.JOIN_ACCEPT;
-										callback.accept(m);
-										setGame(g);
-									}
-									break;
-								case PLAY:
-									setGame(g);
-									break;
-							}
-
-
-						}
-					    catch(Exception e) {
-							e.printStackTrace();
-							break;
-					    }
-				 }
 			}//end of run
 
 

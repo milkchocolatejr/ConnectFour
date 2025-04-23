@@ -27,30 +27,22 @@ public class ClientThread extends Thread{
 			out = new ObjectOutputStream(socketClient.getOutputStream());
 			in = new ObjectInputStream(socketClient.getInputStream());
 			socketClient.setTcpNoDelay(true);
+
+			//Prepare request
+			send(this.requestMessage);
+			System.out.println("CLIENT SENT " + this.requestMessage.messageType);
+
+			//Read response
+			Message responseMessage = (Message) in.readObject();
+			System.out.println("CLIENT GOT " + responseMessage.messageType);
+
+			//Handle response
+			ClientMessageHandler.handle(responseMessage, this.currentStage);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-
-		while(true) {
-			try {
-				//Prepare request
-				send(this.requestMessage);
-				System.out.println("CLIENT SENT " + this.requestMessage.messageType);
-
-				//Read response
-				Message responseMessage = (Message) in.readObject();
-				System.out.println("CLIENT GOT " + responseMessage.messageType);
-
-				//Handle response
-				ClientMessageHandler.handle(responseMessage, this.currentStage);
-			}
-			catch(Exception e) {
-				//e.printStackTrace();
-			}
-		}
-
     }
 
 

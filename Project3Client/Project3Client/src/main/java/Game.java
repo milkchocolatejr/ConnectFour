@@ -92,6 +92,9 @@ public class Game {
     }
 
     public boolean isValidPlay(String username, int col){
+        if(!started){
+            return false;
+        }
         if(playerOneUser.equals(username) && playerOneTurn){
             return gameState[BOARD_SIZE - 2][col] == 0;
         }

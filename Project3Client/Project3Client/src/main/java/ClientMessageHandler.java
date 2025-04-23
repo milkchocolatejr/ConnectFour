@@ -51,8 +51,17 @@ public class ClientMessageHandler{
                             myGame.displayMessage = myGame.getStatus();
                             currentStage.setScene(SceneBuilder.buildGameScreen(myGame, currentStage));
                         }
+                        break;
+                    case PLAY_ACCEPT:
+                        if(myGame.gameID == Integer.parseInt(message.recipient)){
+                            myGame.Play(message.messageText, message.moveCol);
+                            currentStage.setScene(SceneBuilder.buildGameScreen(myGame, currentStage));
+                            System.out.println(message.messageText + " PLAYED " + message.moveCol);
+                        }
+                        break;
                     default:
                         System.out.println("UNKNOWN MESSAGE");
+                        break;
                 }
 
             });
@@ -62,17 +71,20 @@ public class ClientMessageHandler{
         if(request == null){
             return;
         }
-
-        if(request.messageType == MessageType.PLAY && (!myGame.isValidPlay(myUsername, request.moveCol) || !myGame.started)){
-            return;
+        switch(request.messageType){
+            case PLAY:
+                if(!myGame.isValidPlay(myUsername, request.moveCol)){
+                    return;
+                }
+                break;
+            case JOIN:
+                if(myGame != null){
+                    return;
+                }
         }
-        if(request.messageType == MessageType.PLAY){
-            myGame.Play(myUsername, request.moveCol);
-            stage.setScene(SceneBuilder.buildGameScreen(myGame, stage));
-        }
-
         ClientThread t1 = new ClientThread(request, stage);
         t1.start();
+
     }
 
     public synchronized void tryJoinGame(ClientThread clientThread){
