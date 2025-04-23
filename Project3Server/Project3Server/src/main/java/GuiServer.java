@@ -50,7 +50,7 @@ public class GuiServer extends Application{
 			}
 		}
 		primaryStage.setScene(SceneBuilder.buildInitScreen(primaryStage, listGameCodes, listUsers));
-		primaryStage.setTitle("ConnectFour - Trenton/AJ Working Title");
+		primaryStage.setTitle("ConnectFour - Trenton/AJ");
 		primaryStage.show();
 	}
 }
