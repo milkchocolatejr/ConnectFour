@@ -29,8 +29,10 @@ public class ClientThread extends Thread{
 			socketClient.setTcpNoDelay(true);
 
 			//Prepare request
-			send(this.requestMessage);
-			System.out.println("CLIENT SENT " + this.requestMessage.messageType);
+			if(this.requestMessage != null){
+				send(this.requestMessage);
+				System.out.println("CLIENT SENT " + this.requestMessage.messageType);
+			}
 
 			//Read response
 			Message responseMessage = (Message) in.readObject();

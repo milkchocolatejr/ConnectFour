@@ -52,6 +52,13 @@ public class MessageHandler {
                             send(response, server);
                             send(startMessage1, server);
                             send(startMessage2, server);
+
+                            //Trying to start game between clients
+                            Game g = new Game(startMessage1.username, startMessage2.username, game.gameID);
+                            server.addGame(g);
+                            response.messageType = MessageType.START;
+                            send(response, server);
+
                             return game;
                         } else {
                             response.messageType = MessageType.JOIN_DENY;

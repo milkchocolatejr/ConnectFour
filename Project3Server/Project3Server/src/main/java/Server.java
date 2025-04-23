@@ -117,7 +117,7 @@ public class Server{
 			public void send(Message data) {
 				try {
 					out.writeObject(data);
-					System.out.println("SERVER SENT " + data.messageType +" TO " + (data.recipient == null ? "null" : data.recipient));
+					System.out.println("SERVER SENT " + data.messageType + " TO " + (data.recipient == null ? "null" : data.recipient));
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -142,6 +142,14 @@ public class Server{
 								setGame(g);
 							}
 							break;
+						case START:
+							/*if(g != null){
+								Message m = new Message();
+								m.messageType = MessageType.START;
+								callback.accept(m);
+								setGame(g);
+							}*/
+							break;
 						case PLAY:
 							setGame(g);
 							break;
@@ -157,9 +165,6 @@ public class Server{
 
 		}//end of client thread
 }
-
-
-
 
 
 
