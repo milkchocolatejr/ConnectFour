@@ -1,4 +1,5 @@
 import javafx.application.Platform;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -81,9 +82,10 @@ public class SceneBuilder {
         return new Scene(canvas, WIDTH, HEIGHT);
     }
 
-    public static Scene buildGameScreen(Game game){
+    public static Scene buildGameScreen(Game game, Stage primaryStage){
+        int PANE_SIZE = 550;
         Text gameStateText = makeGameText(game.displayMessage, 40);
-        Pane board = makeBoard(game.gameState, 550, 550, 5);
+        Pane board = makeBoard(game.gameState, PANE_SIZE, PANE_SIZE, PANE_SIZE/100);
         ListView<String> list = new ListView<String>();
 
         list.getItems().add(String.valueOf(game.gameID));
@@ -93,7 +95,35 @@ public class SceneBuilder {
         canvas.setPrefSize(WIDTH, HEIGHT);
         canvas.setCenter(root);
 
-        return new Scene(canvas, WIDTH, HEIGHT - 200);
+        Scene scene = new Scene(canvas, WIDTH, HEIGHT);
+
+        scene.setOnMouseClicked(event -> {
+            double clickX = event.getSceneX();
+            double clickY = event.getSceneY();
+
+            // Get scene coordinates of the board pane
+            Bounds boundsInScene = board.localToScene(board.getBoundsInLocal());
+
+            boolean inBoard = clickX >= boundsInScene.getMinX() && clickX <= boundsInScene.getMaxX() &&
+                    clickY >= boundsInScene.getMinY() && clickY <= boundsInScene.getMaxY();
+
+            if(inBoard){
+                double boardX = clickX - boundsInScene.getMinX();
+                int colSize = PANE_SIZE / COLUMNS;
+                int col = 0;
+                while(boardX > colSize * col){
+                    col++;
+                }
+                Message message = new Message();
+                message.messageType = MessageType.PLAY;
+                message.username = (game.playerOneTurn ? game.playerOneUser : game.playerTwoUser);
+                message.moveCol = col - 1;
+                message.messageText = Integer.toString(game.gameID);
+                ClientMessageHandler.send(message, primaryStage);
+            }
+        });
+
+        return scene;
     }
 
     private static Pane makeBoard(int[][] gameBoard, double PANE_WIDTH, double PANE_HEIGHT, int GAP) {

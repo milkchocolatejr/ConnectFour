@@ -15,7 +15,11 @@ public class Message implements Serializable {
 
     @Override
     public String toString(){
-        return messageText;
+        return "MessageType: " + messageType + "\n" +
+                "Move Col: " + moveCol + "\n" +
+                "Username: " + username + "\n" +
+                "MessageText: " + messageText + "\n" +
+                "Recipient: " + recipient + "\n";
     }
 }
 

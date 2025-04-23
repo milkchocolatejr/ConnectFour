@@ -1,3 +1,5 @@
+import javafx.scene.Scene;
+import javafx.scene.shape.Shape;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.lang.String;
@@ -13,6 +15,8 @@ public class Game {
     String playerTwoUser;
     String displayMessage;
     int gameID;
+    Scene GUI;
+    boolean started;
     int[][] gameState;
 
 
@@ -39,10 +43,11 @@ public class Game {
         this.playerTwoWinning = false;
         this.gameOver = false;
         this.playerOneTurn = true;
+        this.started = false;
         this.gameID = gameID;
         this.playerOneUser = playerOne;
         this.playerTwoUser = "";
-        this.displayMessage = "Waiting... | Code: " + gameID;
+        this.displayMessage = "WAITING FOR PLAYER TWO // CODE: " + gameID;
 
         gameState = new int[BOARD_SIZE][BOARD_SIZE];
         for(int i = 0; i < BOARD_SIZE; i++){
@@ -53,19 +58,51 @@ public class Game {
     }
 
     public void fillGame(String playerTwo){
-        if(Objects.equals(this.playerTwoUser, "")) {
+        if(!this.started) {
             this.playerTwoUser = playerTwo;
             this.displayMessage = "Game has started!";
+            Start();
         }
-        Start();
     }
 
     private void Start(){
-
+        if(this.started){
+            throw new RuntimeException("Game has already started!");
+        }
+        this.started = true;
+        playerOneTurn = true;
     }
 
-    public boolean Play(int col){
-        throw new NotImplementedException();
+    public boolean Play(String username, int col){
+        if(!isValidPlay(username, col)){
+            return false;
+        }
+
+        for(int row = BOARD_SIZE - 1; row >= 0; row--){
+            if(gameState[row][col] == 0){
+                gameState[row][col] = (playerOneTurn ? 1 : 2);
+                break;
+            }
+        }
+
+        playerOneTurn = !playerOneTurn;
+        displayMessage = getStatus();
+
+        return true;
+    }
+
+    public boolean isValidPlay(String username, int col){
+        if(playerOneUser.equals(username) && playerOneTurn){
+            return gameState[BOARD_SIZE - 2][col] == 0;
+        }
+        return false;
+    }
+    public String getStatus(){
+        String status = "GAME " + this.gameID;
+        if(!this.started){
+            return status + " // GAME NOT STARTED";
+        }
+        return status + " // " + (this.playerOneTurn ? playerOneUser : playerTwoUser) + "'s turn";
     }
 
 

@@ -37,9 +37,11 @@ public class ClientThread extends Thread{
 			try {
 				//Prepare request
 				send(this.requestMessage);
+				System.out.println("CLIENT SENT " + this.requestMessage.messageType);
 
 				//Read response
 				Message responseMessage = (Message) in.readObject();
+				System.out.println("CLIENT GOT " + responseMessage.messageType);
 
 				//Handle response
 				ClientMessageHandler.handle(responseMessage, this.currentStage);

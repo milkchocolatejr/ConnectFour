@@ -117,6 +117,7 @@ public class Server{
 			public void send(Message data) {
 				try {
 					out.writeObject(data);
+					System.out.println("SERVER SENT " + data.messageType +" TO " + (data.recipient == null ? "null" : data.recipient));
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -135,14 +136,25 @@ public class Server{
 				 while(true) {
 					    try {
 					    	Message data = (Message) in.readObject();
-							System.out.println("GOT THE DATA!");
-							System.out.println("From Server's ClientThread run() method");
+							System.out.println("SERVER GOT :" + data.messageType);
+
 							Game g = MessageHandler.handle(data, stage, server);
-							if(g == null){
-								Message m = new Message();
-								m.messageType = MessageType.JOIN_ACCEPT;
-								callback.accept(m);
+
+							switch(data.messageType){
+								case JOIN:
+									if(g != null){
+										Message m = new Message();
+										m.messageType = MessageType.JOIN_ACCEPT;
+										callback.accept(m);
+										setGame(g);
+									}
+									break;
+								case PLAY:
+									setGame(g);
+									break;
 							}
+
+
 						}
 					    catch(Exception e) {
 							e.printStackTrace();

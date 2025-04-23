@@ -6,4 +6,6 @@ public enum MessageType {
     ERROR,
     JOIN_ACCEPT,
     JOIN_DENY,
+    START,
+    PLAY_ACCEPT,
 }

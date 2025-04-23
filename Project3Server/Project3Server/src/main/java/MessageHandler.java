@@ -8,23 +8,26 @@ public class MessageHandler {
         Message response = new Message();
         switch(message.messageType){
             case JOIN:
-                boolean duplicate = false;
+                System.out.println(message.toString());
+                boolean duplicateUsername = false;
                 for(Game game : server.getGames()){
                     if (Objects.equals(game.playerOneUser, message.username) || Objects.equals(game.playerTwoUser, message.username)) {
-                        duplicate = true;
+                        duplicateUsername = true;
                         break;
                     }
                 }
-                response.messageType = duplicate ? MessageType.JOIN_DENY : MessageType.JOIN_ACCEPT;
-                if(duplicate){
+                response.messageType = duplicateUsername ? MessageType.JOIN_DENY : MessageType.JOIN_ACCEPT;
+                if(duplicateUsername){
                     send(response, server);
                     return null;
                 }
 
 
                 for(Game game : server.getGames()){
+                    System.out.println(game.gameID);
                     if(game.gameID == Integer.parseInt(message.messageText)){
                         if(!game.started){
+                            System.out.println("BLOCK HIT!");
                             game.fillGame(message.username);
 
                             response.recipient = message.username;
@@ -32,17 +35,34 @@ public class MessageHandler {
                             response.messageType = MessageType.JOIN_ACCEPT;
                             response.messageText = message.messageText;
                             send(response, server);
+
+                            Message startMessage1 = new Message();
+                            Message startMessage2 = new Message();
+
+                            startMessage1.messageType = MessageType.START;
+                            startMessage1.username = game.playerTwoUser;
+                            startMessage1.messageText = "1";
+                            startMessage1.recipient = game.playerOneUser;
+
+                            startMessage2.messageType = MessageType.START;
+                            startMessage2.username = game.playerOneUser;
+                            startMessage2.messageText = "2";
+                            startMessage2.recipient = game.playerTwoUser;
+
+                            send(response, server);
+                            send(startMessage1, server);
+                            send(startMessage2, server);
                             return game;
                         } else {
                             response.messageType = MessageType.JOIN_DENY;
                             response.recipient = message.username;
+                            response.messageText = "GAME ALREADY STARTED!";
                             send(response, server);
                             return null;
                         }
                     }
                 }
                 Game g = new Game(message.username, Integer.parseInt(message.messageText));
-
                 server.addGame(g);
 
                 response.recipient = message.username;
@@ -52,13 +72,24 @@ public class MessageHandler {
                 return g;
             case PLAY:
                 System.out.println("PLAY");
+                Message reflectiveMessage = new Message();
+                reflectiveMessage.messageType = MessageType.PLAY;
+                reflectiveMessage.messageText = message.username;
+                reflectiveMessage.moveCol = message.moveCol;
+
+                for(Game game : server.getGames()){
+                    if(game.gameID == Integer.parseInt(message.messageText)){
+                        reflectiveMessage.recipient = (game.playerOneTurn ? game.playerTwoUser : game.playerOneUser);
+                        send(reflectiveMessage, server);
+                        game.Play(message.username, message.moveCol);
+                        return game;
+                    }
+                }
                 break;
         }
         return null;
     }
     public static void send(Message response, Server server) {
-        System.out.println("SEND HIT!");
-        System.out.println("From Server's Message Handler");
         //Named client
         for(Server.ClientThread c: server.clients){
             if(Objects.equals(c.username, response.recipient)){
@@ -94,6 +125,8 @@ public class MessageHandler {
                 stage.show();
                 break;
             case JOIN_DENY:
+                break;
+            case PLAY:
                 break;
         }
     }

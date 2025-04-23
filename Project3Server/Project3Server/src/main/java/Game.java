@@ -29,7 +29,6 @@ public class Game {
         this.playerTwoUser = playerTwo;
         this.displayMessage = "Game has started!";
 
-        this.GUI = SceneBuilder.buildGameScreen(this);
         gameState = new int[BOARD_SIZE][BOARD_SIZE];
         for(int i = 0; i < BOARD_SIZE; i++){
             for(int j = 0; j < BOARD_SIZE; j++){
@@ -43,6 +42,7 @@ public class Game {
         this.playerOneWinning = false;
         this.playerTwoWinning = false;
         this.gameOver = false;
+        this.started = false;
         this.playerOneTurn = true;
         this.gameID = gameID;
         this.playerOneUser = playerOne;
@@ -55,15 +55,12 @@ public class Game {
                 gameState[i][j] = 0;
             }
         }
-
-        this.GUI = SceneBuilder.buildGameScreen(this);
     }
 
     public void fillGame(String playerTwo){
         if(!this.started) {
             this.playerTwoUser = playerTwo;
             this.displayMessage = "Game has started!";
-            this.GUI = SceneBuilder.buildGameScreen(this);
             Start();
         }
     }
@@ -73,10 +70,39 @@ public class Game {
             throw new RuntimeException("Game has already started!");
         }
         this.started = true;
+        playerOneTurn = true;
     }
 
-    public boolean Play(int col){
-        throw new NotImplementedException();
+    public boolean Play(String username, int col){
+        if(!isValidPlay(username, col)){
+            return false;
+        }
+
+        for(int row = BOARD_SIZE - 1; row >= 0; row--){
+            if(gameState[row][col] == 0){
+                gameState[row][col] = (playerOneTurn ? 1 : 2);
+                break;
+            }
+        }
+
+        playerOneTurn = !playerOneTurn;
+
+
+        return true;
+    }
+
+    public boolean isValidPlay(String username, int col){
+        if(playerOneUser.equals(username) && playerOneTurn){
+            return gameState[BOARD_SIZE - 2][col] == 0;
+        }
+        return false;
+    }
+    public String getStatus(){
+        String status = "GAME " + this.gameID;
+        if(!this.started){
+            return status + " // GAME NOT STARTED";
+        }
+        return status + " // " + (this.playerOneTurn ? playerOneUser : playerTwoUser) + "'s turn";
     }
 
 
