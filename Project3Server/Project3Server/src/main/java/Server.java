@@ -136,6 +136,7 @@ public class Server{
 					    try {
 					    	Message data = (Message) in.readObject();
 							System.out.println("GOT THE DATA!");
+							System.out.println("From Server's ClientThread run() method");
 							Game g = MessageHandler.handle(data, stage, server);
 							if(g == null){
 								Message m = new Message();

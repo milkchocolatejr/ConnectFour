@@ -58,6 +58,7 @@ public class MessageHandler {
     }
     public static void send(Message response, Server server) {
         System.out.println("SEND HIT!");
+        System.out.println("From Server's Message Handler");
         //Named client
         for(Server.ClientThread c: server.clients){
             if(Objects.equals(c.username, response.recipient)){
