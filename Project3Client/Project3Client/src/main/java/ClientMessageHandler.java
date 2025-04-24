@@ -47,13 +47,14 @@ public class ClientMessageHandler{
                             SceneBuilder.username = myUsername;
                         }
                         if(Objects.equals(message.recipient, myUsername)){
-                            if(Objects.equals(message.messageText, "1")) {
+                            if(message.messageText.charAt(0) == '1') {
                                 myGame.fillGame(message.username, false);
                             }
-                            else if(Objects.equals(message.messageText, "2")) {
+                            else {
                                 myGame.fillGame(myUsername, true);
                                 myGame.playerOneUser = message.username;
                             }
+
                             myGame.displayMessage = myGame.getStatus();
                             currentStage.setScene(SceneBuilder.buildGameScreen(myGame, currentStage));
                         }

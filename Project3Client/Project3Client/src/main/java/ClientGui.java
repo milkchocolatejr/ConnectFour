@@ -22,11 +22,11 @@ public class ClientGui extends Application{
 		currentStage = primaryStage;
 	}
 
-	public void renderPlayer(Stage primaryStage, String title){
+	/*public void renderPlayer(Stage primaryStage, String title){
 		primaryStage.setTitle(title);
 		primaryStage.show();
 		currentStage = primaryStage;
-	}
+	}*/
 
 
 }

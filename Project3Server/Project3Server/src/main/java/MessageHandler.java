@@ -32,12 +32,12 @@ public class MessageHandler {
 
                             startMessage1.messageType = MessageType.START;
                             startMessage1.username = game.playerTwoUser;
-                            startMessage1.messageText = "1";
+                            startMessage1.messageText = "1" + game.gameID;
                             startMessage1.recipient = game.playerOneUser;
 
                             startMessage2.messageType = MessageType.START;
                             startMessage2.username = game.playerOneUser;
-                            startMessage2.messageText = "2";
+                            startMessage2.messageText = game.gameID + "";
                             startMessage2.recipient = game.playerTwoUser;
 
                             send(startMessage1, server);

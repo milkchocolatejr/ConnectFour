@@ -89,7 +89,10 @@ public class SceneBuilder {
         Pane board = makeBoard(game.gameState, PANE_SIZE, PANE_SIZE, PANE_SIZE/100);
         ListView<String> list = new ListView<String>();
 
-        list.getItems().add(String.valueOf(game.gameID));
+        String stringedID = game.gameID + "";
+
+        list.getItems().add(stringedID);
+        System.out.println(game.gameID);
 
         HBox root = new HBox(new VBox(gameStateText, board), list) ;
         BorderPane canvas = new BorderPane();
@@ -121,9 +124,9 @@ public class SceneBuilder {
                 message.moveCol = col - 1;
                 message.messageText = Integer.toString(game.gameID);
                 ClientMessageHandler.send(message, primaryStage);
+                primaryStage.setTitle(username + "'s GAME | ID : " + game.gameID);
             }
         });
-        primaryStage.setTitle(username + "'s GAME | ID : " + game.gameID);
         return scene;
     }
 
