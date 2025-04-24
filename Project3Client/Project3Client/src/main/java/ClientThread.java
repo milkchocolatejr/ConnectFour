@@ -57,7 +57,7 @@ public class ClientThread extends Thread{
 			e.printStackTrace();
 		}
 	}
-	class ClientListener extends Thread {
+	static class ClientListener extends Thread {
 		private ObjectInputStream in;
 		private Stage stage;
 

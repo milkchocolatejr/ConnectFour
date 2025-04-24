@@ -22,19 +22,10 @@ public class MessageHandler {
                     return null;
                 }
 
-
                 for(Game game : server.getGames()){
-                    System.out.println(game.gameID);
                     if(game.gameID == Integer.parseInt(message.messageText)){
                         if(!game.started){
-                            System.out.println("BLOCK HIT!");
                             game.fillGame(message.username);
-
-                            response.recipient = message.username;
-                            response.username = "SERVER";
-                            response.messageType = MessageType.JOIN_ACCEPT;
-                            response.messageText = message.messageText;
-                            send(response, server);
 
                             Message startMessage1 = new Message();
                             Message startMessage2 = new Message();
@@ -49,18 +40,12 @@ public class MessageHandler {
                             startMessage2.messageText = "2";
                             startMessage2.recipient = game.playerTwoUser;
 
-                            send(response, server);
                             send(startMessage1, server);
                             send(startMessage2, server);
 
-                            //Trying to start game between clients
-                            Game g = new Game(startMessage1.username, startMessage2.username, game.gameID);
-                            server.addGame(g);
-                            response.messageType = MessageType.START;
-                            send(response, server);
-
                             return game;
-                        } else {
+                        }
+                        else {
                             response.messageType = MessageType.JOIN_DENY;
                             response.recipient = message.username;
                             response.messageText = "GAME ALREADY STARTED!";

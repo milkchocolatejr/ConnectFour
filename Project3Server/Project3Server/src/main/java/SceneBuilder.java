@@ -61,8 +61,8 @@ public class SceneBuilder {
     private static Shape makeBoard(int[][] gameBoard){
         Shape board = new Rectangle((COLUMNS + 1) * TILE_SIZE, (ROWS + 1) * TILE_SIZE);
 
-        for(int y = 0; y < ROWS; y++){
-            for(int x = 0; x < COLUMNS; x++){
+        for(int row = 0; row < ROWS; row++){
+            for(int col = 0; col < COLUMNS; col++){
                 Circle c = new Circle((double) TILE_SIZE / 2);
 
                 //Setting center of the square to be the true center of sub-square
@@ -70,14 +70,14 @@ public class SceneBuilder {
                 c.setCenterY((double) TILE_SIZE / 2);
 
                 //Providing margins
-                c.setTranslateX(x * (TILE_SIZE + 5) + (double) TILE_SIZE / 2);
-                c.setTranslateY(y * (TILE_SIZE + 5) + (double) TILE_SIZE / 2);
+                c.setTranslateX(row * (TILE_SIZE + 5) + (double) TILE_SIZE / 2);
+                c.setTranslateY(col * (TILE_SIZE + 5) + (double) TILE_SIZE / 2);
 
                 //Color piece based on game state
                 board = Shape.subtract(board, c);
 
                 Color color;
-                switch(gameBoard[x][y]){
+                switch(gameBoard[row][col]){
                     case 0:
                         color = Color.WHITE;
                         break;

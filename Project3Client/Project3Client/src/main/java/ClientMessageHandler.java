@@ -11,15 +11,16 @@ public class ClientMessageHandler{
 
     public static void handle(Message message, Stage currentStage){
             Platform.runLater(() -> {
+                System.out.println("=====================");
+                System.out.println(myUsername + " received message: " + message.toString());
+                System.out.println("=====================");
                 switch(message.messageType){
                     case TEXT:
                         System.out.println("TEXT MESSAGE");
                         break;
                     case JOIN:
-                        System.out.println("JOINED SERVER");
                         break;
                     case PLAY:
-                        System.out.println("CLIENT GOT PLAY");
                         if(message.recipient.equals(myUsername)){
                             myGame.Play(message.messageText, message.moveCol);
                             currentStage.setScene(SceneBuilder.buildGameScreen(myGame, currentStage));
@@ -27,26 +28,30 @@ public class ClientMessageHandler{
                         }
                         break;
                     case DISCONNECT:
-                        System.out.println("DISCONNECTED SERVER");
                         break;
                     case ERROR:
-                        System.out.println("ERROR MESSAGE");
                         break;
                     case JOIN_ACCEPT:
                         myGame = new Game(message.recipient, Integer.parseInt(message.messageText));
-                        currentStage.setScene(SceneBuilder.buildGameScreen(myGame, currentStage));
                         myUsername = message.recipient;
+                        SceneBuilder.username = myUsername;
+                        currentStage.setScene(SceneBuilder.buildGameScreen(myGame, currentStage));
                         break;
                     case JOIN_DENY:
                         currentStage.setScene(SceneBuilder.buildTitleScreen(currentStage));
                         break;
                     case START:
+                        if(myGame == null){
+                            myGame = new Game(message.recipient, Integer.parseInt(message.messageText));
+                            myUsername = message.recipient;
+                            SceneBuilder.username = myUsername;
+                        }
                         if(Objects.equals(message.recipient, myUsername)){
                             if(Objects.equals(message.messageText, "1")) {
-                                myGame.fillGame(message.username);
+                                myGame.fillGame(message.username, false);
                             }
                             else if(Objects.equals(message.messageText, "2")) {
-                                myGame.fillGame(myUsername);
+                                myGame.fillGame(myUsername, true);
                                 myGame.playerOneUser = message.username;
                             }
                             myGame.displayMessage = myGame.getStatus();
@@ -61,7 +66,6 @@ public class ClientMessageHandler{
                         }
                         break;
                     default:
-                        System.out.println("UNKNOWN MESSAGE");
                         break;
                 }
 
@@ -82,6 +86,7 @@ public class ClientMessageHandler{
                 if(myGame != null){
                     return;
                 }
+                myUsername = request.username;
         }
         ClientThread t1 = new ClientThread(request, stage);
         t1.start();

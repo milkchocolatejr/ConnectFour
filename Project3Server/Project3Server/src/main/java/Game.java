@@ -1,9 +1,6 @@
 import javafx.scene.Scene;
-import javafx.scene.shape.Shape;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.lang.String;
-import java.util.Objects;
 
 public class Game {
     private final int BOARD_SIZE = 7;
@@ -73,9 +70,9 @@ public class Game {
         playerOneTurn = true;
     }
 
-    public boolean Play(String username, int col){
+    public void Play(String username, int col){
         if(!isValidPlay(username, col)){
-            return false;
+            return;
         }
 
         for(int row = BOARD_SIZE - 1; row >= 0; row--){
@@ -86,9 +83,6 @@ public class Game {
         }
 
         playerOneTurn = !playerOneTurn;
-
-
-        return true;
     }
 
     public boolean isValidPlay(String username, int col){

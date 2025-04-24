@@ -30,6 +30,7 @@ public class SceneBuilder {
     private static final int TILE_SIZE = 75;
     private static final int ROWS = 7;
     private static final int COLUMNS = 7;
+    public static String username;
 
     public static Scene buildTitleScreen(Stage primaryStage) {
         Text title = makeTitleText("Welcome to our \n Connect Four Project! \n SPR 2025 CS 342 ", 70, TextAlignment.CENTER, true);
@@ -95,7 +96,7 @@ public class SceneBuilder {
         canvas.setPrefSize(WIDTH, HEIGHT);
         canvas.setCenter(root);
 
-        Scene scene = new Scene(canvas, WIDTH, HEIGHT);
+        Scene scene = new Scene(canvas, WIDTH, HEIGHT - 200);
 
         scene.setOnMouseClicked(event -> {
             double clickX = event.getSceneX();
@@ -122,7 +123,7 @@ public class SceneBuilder {
                 ClientMessageHandler.send(message, primaryStage);
             }
         });
-
+        primaryStage.setTitle(username + "'s GAME | ID : " + game.gameID);
         return scene;
     }
 
@@ -149,18 +150,18 @@ public class SceneBuilder {
         }
 
         // Add game pieces
-        for (int y = 0; y < ROWS; y++) {
-            for (int x = 0; x < COLUMNS; x++) {
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLUMNS; col++) {
                 Circle c = new Circle(TILE_SIZE / 2.0);
 
-                double posX = x * (TILE_SIZE + GAP) + GAP + TILE_SIZE / 2.0;
-                double posY = y * (TILE_SIZE + GAP) + GAP + TILE_SIZE / 2.0;
+                double posX = col * (TILE_SIZE + GAP) + GAP + TILE_SIZE / 2.0;
+                double posY = row * (TILE_SIZE + GAP) + GAP + TILE_SIZE / 2.0;
                 c.setCenterX(posX);
                 c.setCenterY(posY);
 
                 // Color based on game state
                 Color color;
-                switch (gameBoard[x][y]) {
+                switch (gameBoard[row][col]) {
                     case 0: color = Color.WHITE; break;
                     case 1: color = Color.RED; break;
                     case 2: color = Color.BLUE; break;

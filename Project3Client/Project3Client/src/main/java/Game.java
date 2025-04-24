@@ -27,7 +27,7 @@ public class Game {
         this.gameID = gameID;
         this.playerOneUser = playerOne;
         this.playerTwoUser = playerTwo;
-        this.displayMessage = "Game has started!";
+        this.displayMessage = getStatus();
 
         gameState = new int[BOARD_SIZE][BOARD_SIZE];
         for(int i = 0; i < BOARD_SIZE; i++){
@@ -47,7 +47,7 @@ public class Game {
         this.gameID = gameID;
         this.playerOneUser = playerOne;
         this.playerTwoUser = "";
-        this.displayMessage = "WAITING FOR PLAYER TWO // CODE: " + gameID;
+        this.displayMessage = getStatus();
 
         gameState = new int[BOARD_SIZE][BOARD_SIZE];
         for(int i = 0; i < BOARD_SIZE; i++){
@@ -57,10 +57,14 @@ public class Game {
         }
     }
 
-    public void fillGame(String playerTwo){
+    public void fillGame(String playerTwo, boolean swap){
         if(!this.started) {
             this.playerTwoUser = playerTwo;
-            this.displayMessage = "Game has started!";
+            this.displayMessage = getStatus();
+            if(swap){
+                this.playerTwoUser = this.playerOneUser;
+                this.playerOneUser = playerTwo;
+            }
             Start();
         }
     }
@@ -71,11 +75,16 @@ public class Game {
         }
         this.started = true;
         playerOneTurn = true;
+        System.out.println("=============");
+        System.out.println("GAME START!");
+        System.out.println("Player 1: " + playerOneUser);
+        System.out.println("Player 2: " + playerTwoUser);
+        System.out.println("=============");
     }
 
-    public boolean Play(String username, int col){
+    public void Play(String username, int col){
         if(!isValidPlay(username, col)){
-            return false;
+            return;
         }
 
         for(int row = BOARD_SIZE - 1; row >= 0; row--){
@@ -86,9 +95,6 @@ public class Game {
         }
 
         playerOneTurn = !playerOneTurn;
-        displayMessage = getStatus();
-
-        return true;
     }
 
     public boolean isValidPlay(String username, int col){
@@ -101,11 +107,10 @@ public class Game {
         return false;
     }
     public String getStatus(){
-        String status = "GAME " + this.gameID;
         if(!this.started){
-            return status + " // GAME NOT STARTED";
+            return "GAME NOT STARTED";
         }
-        return status + " // " + (this.playerOneTurn ? playerOneUser : playerTwoUser) + "'s turn";
+        return (this.playerOneTurn ? playerOneUser : playerTwoUser) + "'s turn";
     }
 
 
