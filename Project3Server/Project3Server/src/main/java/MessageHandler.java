@@ -64,17 +64,17 @@ public class MessageHandler {
                 return g;
             case PLAY:
                 System.out.println("PLAY");
-                Message reflectiveMessage = new Message();
-                reflectiveMessage.messageType = MessageType.PLAY_ACCEPT;
-                reflectiveMessage.messageText = message.username;
-                reflectiveMessage.moveCol = message.moveCol;
+
 
                 for(Game game : server.getGames()){
                     if(game.gameID == Integer.parseInt(message.messageText)){
-                        reflectiveMessage.recipient = Integer.toString(game.gameID);
-                        send(reflectiveMessage, server);
                         game.Play(message.username, message.moveCol);
-                        return game;
+                        Message reflectiveMessage = new Message();
+                        reflectiveMessage.messageType = MessageType.PLAY;
+                        reflectiveMessage.username = message.username;
+                        reflectiveMessage.recipient = game.playerOneTurn ? game.playerOneUser: game.playerTwoUser;
+                        reflectiveMessage.moveCol = message.moveCol;
+                        send(reflectiveMessage, server);
                     }
                 }
                 break;

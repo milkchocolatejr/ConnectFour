@@ -22,9 +22,9 @@ public class ClientMessageHandler{
                         break;
                     case PLAY:
                         if(message.recipient.equals(myUsername)){
-                            myGame.Play(message.messageText, message.moveCol);
+                            myGame.Play(message.username, message.moveCol);
                             currentStage.setScene(SceneBuilder.buildGameScreen(myGame, currentStage));
-                            System.out.println(message.messageText + " PLAYED " + message.moveCol);
+                            System.out.println(message.username + " PLAYED " + message.moveCol);
                         }
                         break;
                     case DISCONNECT:
@@ -81,6 +81,8 @@ public class ClientMessageHandler{
                 if(!myGame.isValidPlay(myUsername, request.moveCol)){
                     return;
                 }
+                myGame.Play(request.username, request.moveCol);
+                stage.setScene(SceneBuilder.buildGameScreen(myGame, stage));
                 break;
             case JOIN:
                 if(myGame != null){
