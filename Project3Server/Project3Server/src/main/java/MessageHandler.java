@@ -6,9 +6,9 @@ import java.util.Objects;
 public class MessageHandler {
     public static Game handle(Message message, Stage stage, Server server) {
         Message response = new Message();
+        System.out.println(message.toString());
         switch(message.messageType){
             case JOIN:
-                System.out.println(message.toString());
                 boolean duplicateUsername = false;
                 for(Game game : server.getGames()){
                     if (Objects.equals(game.playerOneUser, message.username) || Objects.equals(game.playerTwoUser, message.username)) {

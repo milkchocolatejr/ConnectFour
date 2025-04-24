@@ -2,6 +2,7 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.Objects;
 
 public class ClientMessageHandler{
@@ -32,7 +33,6 @@ public class ClientMessageHandler{
                         System.out.println("ERROR MESSAGE");
                         break;
                     case JOIN_ACCEPT:
-                        System.out.println("THE BOINGLOINGS");
                         myGame = new Game(message.recipient, Integer.parseInt(message.messageText));
                         currentStage.setScene(SceneBuilder.buildGameScreen(myGame, currentStage));
                         myUsername = message.recipient;
@@ -41,7 +41,6 @@ public class ClientMessageHandler{
                         currentStage.setScene(SceneBuilder.buildTitleScreen(currentStage));
                         break;
                     case START:
-                        System.out.println("CLIENT GOT HIT IN THE BOINGLOINGS");
                         if(Objects.equals(message.recipient, myUsername)){
                             if(Objects.equals(message.messageText, "1")) {
                                 myGame.fillGame(message.username);
@@ -86,15 +85,7 @@ public class ClientMessageHandler{
         }
         ClientThread t1 = new ClientThread(request, stage);
         t1.start();
-        if(request.messageType == MessageType.JOIN){
-            ClientThread t2 = new ClientThread(null, stage);
-            t2.start();
-        }
     }
 
-    public synchronized void tryJoinGame(ClientThread clientThread){
 
-    }
 }
-
-
