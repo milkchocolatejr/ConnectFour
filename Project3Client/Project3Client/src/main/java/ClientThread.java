@@ -7,7 +7,7 @@ import java.net.Socket;
 
 public class ClientThread extends Thread{
 	Socket socketClient;
-	
+
 	ObjectOutputStream out;
 	ObjectInputStream in;
 
@@ -23,36 +23,61 @@ public class ClientThread extends Thread{
 
 	public void run() {
 		try {
-			socketClient= new Socket("127.0.0.1",5555);
+			socketClient = new Socket("127.0.0.1", 5555);
 			out = new ObjectOutputStream(socketClient.getOutputStream());
 			in = new ObjectInputStream(socketClient.getInputStream());
 			socketClient.setTcpNoDelay(true);
 
-			//Prepare request
-			send(this.requestMessage);
-			System.out.println("CLIENT SENT " + this.requestMessage.messageType);
+			// Send the request
+			if (requestMessage != null) {
+				send(this.requestMessage);
+				System.out.println("CLIENT SENT " + this.requestMessage.messageType);
+			}
 
-			//Read response
+			// Only process the first response immediately (e.g., JOIN_ACCEPT)
 			Message responseMessage = (Message) in.readObject();
 			System.out.println("CLIENT GOT " + responseMessage.messageType);
-
-			//Handle response
 			ClientMessageHandler.handle(responseMessage, this.currentStage);
-		}
-		catch(Exception e) {
+
+			// Start listening for further messages
+			new ClientListener(in, this.currentStage).start();
+
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
-    }
+	}
 
 
 	public void send(Message data) {
 		try {
 			out.writeObject(data);
+			out.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+	class ClientListener extends Thread {
+		private ObjectInputStream in;
+		private Stage stage;
 
+		public ClientListener(ObjectInputStream in, Stage stage) {
+			this.in = in;
+			this.stage = stage;
+		}
+
+		public void run() {
+			try {
+				while (true) {
+					Message message = (Message) in.readObject();
+					System.out.println("CLIENT LISTENER GOT " + message.messageType);
+					ClientMessageHandler.handle(message, stage);
+				}
+			} catch (Exception e) {
+				System.out.println("CLIENT LISTENER CLOSED");
+				e.printStackTrace();
+			}
+		}
+	}
 
 }

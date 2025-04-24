@@ -2,6 +2,7 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.Objects;
 
 public class ClientMessageHandler{
@@ -84,10 +85,7 @@ public class ClientMessageHandler{
         }
         ClientThread t1 = new ClientThread(request, stage);
         t1.start();
-
     }
 
-    public synchronized void tryJoinGame(ClientThread clientThread){
 
-    }
 }
