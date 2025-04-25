@@ -94,6 +94,24 @@ public class Game {
             }
         }
 
+        //Code to determine outcomes before making moves
+        if(outcome() == 0 && boardFull())
+        {
+            System.out.println("GAME TIE, NO ONE WINS");
+        }
+        if(outcome() == 1)
+        {
+            System.out.println("PLAYER ONE " + playerOneUser + "WINS");
+            playerOneWinning = true;
+            playerTwoWinning = false;
+        }
+        if(outcome() == 2)
+        {
+            System.out.println("PLAYER TWO " + playerTwoUser + "WINS");
+            playerOneWinning = false;
+            playerTwoWinning = true;
+        }
+
         playerOneTurn = !playerOneTurn;
     }
 
@@ -233,10 +251,35 @@ public class Game {
 
                 };
 
+        //Return 0 for tie, players win nor lose
+        //Return 1 for player one win and player two loss
+        //Return 2 for player one loss and player two win
+        for(int i = 0; i < boardPairs.length; i++)
+        {
+            if( (boardPairs[i][0] == 1) && (boardPairs[i][1] == 1)
+                    && (boardPairs[i][2] == 1) && (boardPairs[i][3] == 1) )
+            {
+                return 1;
+            }
+            if( (boardPairs[i][0] == 2) && (boardPairs[i][1] == 2)
+                    && (boardPairs[i][2] == 2) && (boardPairs[i][3] == 2) )
+            {
+                return 2;
+            }
+        }
 
-        //Return 0 for wins, 1 for losses, and 2 for ties
+        return 0;
+    }
 
-        return 1;
+    public boolean boardFull() {
+        for (int[] boxRows : gameState) {
+            for (int box : boxRows) {
+                if (box == 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
 }
