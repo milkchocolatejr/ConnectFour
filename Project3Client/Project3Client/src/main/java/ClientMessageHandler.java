@@ -23,12 +23,13 @@ public class ClientMessageHandler{
                             myGame.Play(message.username, message.moveCol);
                             currentStage.setScene(SceneBuilder.buildGameScreen(myGame, currentStage));
                             System.out.println(message.username + " PLAYED " + message.moveCol);
-                            if(myGame.GameOver()){
-                                message.messageText = "SOMEBODY WON";
-                                message.messageType = MessageType.GAME_OVER;
-                                ClientMessageHandler.send(message, currentStage);
-                            }
                         }
+                            if(myGame.GameOver()){
+                                /*message.messageText = "SOMEBODY WON";
+                                message.messageType = MessageType.GAME_OVER;
+                                ClientMessageHandler.send(message, currentStage);*/
+                                currentStage.setScene(SceneBuilder.buildGameOverScreen(myGame, currentStage));
+                            }
                         break;
                     case DISCONNECT:
                         break;

@@ -90,29 +90,6 @@ public class Game {
             }
         }
 
-        //Code to determine outcomes before making moves
-        if(outcome() == 0 && boardFull())
-        {
-            System.out.println("GAME TIE, NO ONE WINS");
-            gameOver = true;
-        }
-        if(outcome() == 1)
-        {
-            System.out.println("PLAYER ONE " + playerOneUser + " WINS!");
-            System.out.println("PLAYER TWO " + playerTwoUser + " LOSES!");
-            playerOneWinning = true;
-            playerTwoWinning = false;
-            gameOver = true;
-        }
-        if(outcome() == 2)
-        {
-            System.out.println("PLAYER TWO " + playerTwoUser +  " WINS!");
-            System.out.println("PLAYER ONE " + playerOneUser + " LOSES!");
-            playerOneWinning = false;
-            playerTwoWinning = true;
-            gameOver = true;
-        }
-
         playerOneTurn = !playerOneTurn;
         displayMessage = getStatus();
     }
@@ -143,6 +120,26 @@ public class Game {
             return true;
         }
         return false;
+    }
+
+    public void resetGame(){
+        this.playerOneWinning = false;
+        this.playerTwoWinning = false;
+        this.playerOneTurn = true;
+        this.displayMessage = getStatus();
+        this.playerOneWinning = false;
+        this.playerTwoWinning = false;
+        this.gameOver = false;
+        this.playerOneTurn = true;
+        this.started = true;
+
+        this.gameState = new int[BOARD_SIZE][BOARD_SIZE];
+        for(int i = 0; i < BOARD_SIZE; i++){
+            for(int j = 0; j < BOARD_SIZE; j++){
+                gameState[i][j] = 0;
+            }
+        }
+        Start();
     }
 
     public boolean isInvalidPlay(String username, int col){

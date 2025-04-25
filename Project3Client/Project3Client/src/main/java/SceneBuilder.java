@@ -136,11 +136,13 @@ public class SceneBuilder {
     public static Scene buildGameOverScreen(Game game, Stage primaryStage) {
         Text title = makeTitleText("Game Over! ", 70, TextAlignment.CENTER, true);
 
-        Button playAgainButton = makeTitleButton("Login", 30);
+        Button playAgainButton = makeTitleButton("Play Again", 30);
         playAgainButton.setOnAction(e -> {
 
             //buildGameScreen()
             //set game to game that just occurred
+            //Reset Game from inside game over function
+            game.resetGame();
             primaryStage.setScene(SceneBuilder.buildGameScreen(game, primaryStage));
         });
 
