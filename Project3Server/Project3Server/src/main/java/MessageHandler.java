@@ -80,6 +80,34 @@ public class MessageHandler {
                     }
                 }
                 break;
+            /*case GAME_OVER:
+                System.out.println("PLAY");
+
+
+                for(Game game : server.getGames()){
+                    if(game.gameID == Integer.parseInt(message.messageText)){
+                        game.Play(message.username, message.moveCol);
+                        Message reflectiveMessage = new Message();
+                        reflectiveMessage.messageType = MessageType.PLAY;
+                        reflectiveMessage.username = message.username;
+                        reflectiveMessage.recipient = game.playerOneTurn ? game.playerOneUser: game.playerTwoUser;
+                        reflectiveMessage.moveCol = message.moveCol;
+                        stage.
+                        send(reflectiveMessage, server);
+                    }
+                }
+
+                    for(Game game : server.getGames()){
+                        if(game.gameID == Integer.parseInt(message.messageText)){
+                            if(game.gameOver()) {
+
+                            }
+
+
+                        }
+                    }
+                }*/
+
         }
         return null;
     }
