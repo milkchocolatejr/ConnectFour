@@ -90,6 +90,24 @@ public class Game {
             }
         }
 
+        //Code to determine outcomes before making moves
+        if(outcome() == 0 && boardFull())
+        {
+            System.out.println("GAME TIE, NO ONE WINS");
+        }
+        if(outcome() == 1)
+        {
+            System.out.println("PLAYER ONE " + playerOneUser + "WINS");
+            playerOneWinning = true;
+            playerTwoWinning = false;
+        }
+        if(outcome() == 2)
+        {
+            System.out.println("PLAYER TWO " + playerTwoUser + "WINS");
+            playerOneWinning = false;
+            playerTwoWinning = true;
+        }
+
         playerOneTurn = !playerOneTurn;
         displayMessage = getStatus();
     }
@@ -113,5 +131,155 @@ public class Game {
         return (this.playerOneTurn ? playerOneUser : playerTwoUser) + "'s turn";
     }
 
+    public int outcome() {
+
+        int[][] boardPairs =
+                {
+                        //All Horizontal win outcomes
+                        {gameState[0][0], gameState[0][1], gameState[0][2], gameState[0][3]},
+                        {gameState[0][1], gameState[0][2], gameState[0][3], gameState[0][4]},
+                        {gameState[0][2], gameState[0][3], gameState[0][4], gameState[0][5]},
+                        {gameState[0][3], gameState[0][4], gameState[0][5], gameState[0][6]},
+
+                        {gameState[1][0], gameState[1][1], gameState[1][2], gameState[1][3]},
+                        {gameState[1][1], gameState[1][2], gameState[1][3], gameState[1][4]},
+                        {gameState[1][2], gameState[1][3], gameState[1][4], gameState[1][5]},
+                        {gameState[1][3], gameState[1][4], gameState[1][5], gameState[1][6]},
+
+                        {gameState[2][0], gameState[2][1], gameState[2][2], gameState[2][3]},
+                        {gameState[2][1], gameState[2][2], gameState[2][3], gameState[2][4]},
+                        {gameState[2][2], gameState[2][3], gameState[2][4], gameState[2][5]},
+                        {gameState[2][3], gameState[2][4], gameState[2][5], gameState[2][6]},
+
+                        {gameState[3][0], gameState[3][1], gameState[3][2], gameState[3][3]},
+                        {gameState[3][1], gameState[3][2], gameState[3][3], gameState[3][4]},
+                        {gameState[3][2], gameState[3][3], gameState[3][4], gameState[3][5]},
+                        {gameState[3][3], gameState[3][4], gameState[3][5], gameState[3][6]},
+
+                        {gameState[4][0], gameState[4][1], gameState[4][2], gameState[4][3]},
+                        {gameState[4][1], gameState[4][2], gameState[4][3], gameState[4][4]},
+                        {gameState[4][2], gameState[4][3], gameState[4][4], gameState[4][5]},
+                        {gameState[4][3], gameState[4][4], gameState[4][5], gameState[4][6]},
+
+                        {gameState[5][0], gameState[5][1], gameState[5][2], gameState[5][3]},
+                        {gameState[5][1], gameState[5][2], gameState[5][3], gameState[5][4]},
+                        {gameState[5][2], gameState[5][3], gameState[5][4], gameState[5][5]},
+                        {gameState[5][3], gameState[5][4], gameState[5][5], gameState[5][6]},
+
+                        {gameState[6][0], gameState[6][1], gameState[6][2], gameState[6][3]},
+                        {gameState[6][1], gameState[6][2], gameState[6][3], gameState[6][4]},
+                        {gameState[6][2], gameState[6][3], gameState[6][4], gameState[6][5]},
+                        {gameState[6][3], gameState[6][4], gameState[6][5], gameState[6][6]},
+
+                        //All vertical win outcomes
+                        {gameState[0][0], gameState[1][0], gameState[2][0], gameState[3][0]},
+                        {gameState[1][0], gameState[2][0], gameState[3][0], gameState[4][0]},
+                        {gameState[2][0], gameState[3][0], gameState[4][0], gameState[5][0]},
+                        {gameState[3][0], gameState[4][0], gameState[5][0], gameState[6][0]},
+
+                        {gameState[0][1], gameState[1][1], gameState[2][1], gameState[3][1]},
+                        {gameState[1][1], gameState[2][1], gameState[3][1], gameState[4][1]},
+                        {gameState[2][1], gameState[3][1], gameState[4][1], gameState[5][1]},
+                        {gameState[3][1], gameState[4][1], gameState[5][1], gameState[6][1]},
+
+                        {gameState[0][2], gameState[1][2], gameState[2][2], gameState[3][2]},
+                        {gameState[1][2], gameState[2][2], gameState[3][2], gameState[4][2]},
+                        {gameState[2][2], gameState[3][2], gameState[4][2], gameState[5][2]},
+                        {gameState[3][2], gameState[4][2], gameState[5][2], gameState[6][2]},
+
+                        {gameState[0][3], gameState[1][3], gameState[2][3], gameState[3][3]},
+                        {gameState[1][3], gameState[2][3], gameState[3][3], gameState[4][3]},
+                        {gameState[2][3], gameState[3][3], gameState[4][3], gameState[5][3]},
+                        {gameState[3][3], gameState[4][3], gameState[5][3], gameState[6][3]},
+
+                        {gameState[0][4], gameState[1][4], gameState[4][4], gameState[3][4]},
+                        {gameState[1][4], gameState[2][4], gameState[3][4], gameState[4][4]},
+                        {gameState[2][4], gameState[3][4], gameState[4][4], gameState[5][4]},
+                        {gameState[3][4], gameState[4][4], gameState[5][4], gameState[6][4]},
+
+                        {gameState[0][5], gameState[1][5], gameState[2][5], gameState[3][5]},
+                        {gameState[1][5], gameState[2][5], gameState[3][5], gameState[4][5]},
+                        {gameState[2][5], gameState[3][5], gameState[4][5], gameState[5][5]},
+                        {gameState[3][5], gameState[4][5], gameState[5][5], gameState[6][5]},
+
+                        {gameState[0][6], gameState[1][6], gameState[2][6], gameState[3][6]},
+                        {gameState[1][6], gameState[2][6], gameState[3][6], gameState[4][6]},
+                        {gameState[2][6], gameState[3][6], gameState[4][6], gameState[5][6]},
+                        {gameState[3][6], gameState[4][6], gameState[5][6], gameState[6][6]},
+
+                        //All diagonal-right win outcomes
+                        {gameState[0][0], gameState[1][1], gameState[2][2], gameState[3][3]},
+                        {gameState[0][1], gameState[1][2], gameState[2][3], gameState[3][4]},
+                        {gameState[0][2], gameState[1][3], gameState[2][4], gameState[3][5]},
+                        {gameState[0][3], gameState[1][4], gameState[2][5], gameState[3][6]},
+
+                        {gameState[1][0], gameState[2][1], gameState[3][2], gameState[4][3]},
+                        {gameState[1][1], gameState[2][2], gameState[3][3], gameState[4][4]},
+                        {gameState[1][2], gameState[2][3], gameState[3][4], gameState[4][5]},
+                        {gameState[1][3], gameState[2][4], gameState[3][5], gameState[4][6]},
+
+                        {gameState[2][0], gameState[3][1], gameState[4][2], gameState[5][3]},
+                        {gameState[2][1], gameState[3][2], gameState[4][3], gameState[5][4]},
+                        {gameState[2][2], gameState[3][3], gameState[4][4], gameState[5][5]},
+                        {gameState[2][3], gameState[3][4], gameState[4][5], gameState[6][6]},
+
+                        {gameState[3][0], gameState[4][1], gameState[5][2], gameState[6][3]},
+                        {gameState[3][1], gameState[4][2], gameState[5][3], gameState[6][4]},
+                        {gameState[3][2], gameState[4][3], gameState[5][4], gameState[6][5]},
+                        {gameState[3][3], gameState[4][4], gameState[5][5], gameState[6][6]},
+
+                        //All diagonal-left win outcomes
+                        {gameState[3][0], gameState[2][1], gameState[1][2], gameState[0][3]},
+                        {gameState[3][1], gameState[2][2], gameState[1][3], gameState[0][4]},
+                        {gameState[3][2], gameState[2][3], gameState[1][4], gameState[0][5]},
+                        {gameState[3][3], gameState[2][4], gameState[1][5], gameState[0][6]},
+
+                        {gameState[4][0], gameState[3][1], gameState[2][2], gameState[1][3]},
+                        {gameState[4][1], gameState[3][2], gameState[2][3], gameState[1][4]},
+                        {gameState[4][2], gameState[3][3], gameState[2][4], gameState[1][5]},
+                        {gameState[4][3], gameState[3][4], gameState[2][5], gameState[1][6]},
+
+                        {gameState[5][0], gameState[4][1], gameState[3][2], gameState[2][3]},
+                        {gameState[5][1], gameState[4][2], gameState[3][3], gameState[2][4]},
+                        {gameState[5][2], gameState[4][3], gameState[3][4], gameState[2][5]},
+                        {gameState[5][3], gameState[4][4], gameState[3][5], gameState[2][6]},
+
+                        {gameState[6][0], gameState[5][1], gameState[4][2], gameState[3][3]},
+                        {gameState[6][1], gameState[5][2], gameState[4][3], gameState[3][4]},
+                        {gameState[6][2], gameState[5][3], gameState[4][4], gameState[3][5]},
+                        {gameState[6][3], gameState[5][4], gameState[4][5], gameState[3][6]},
+
+                };
+
+        //Return 0 for tie, players win nor lose
+        //Return 1 for player one win and player two loss
+        //Return 2 for player one loss and player two win
+        for(int i = 0; i < boardPairs.length; i++)
+        {
+            if( (boardPairs[i][0] == 1) && (boardPairs[i][1] == 1)
+                    && (boardPairs[i][2] == 1) && (boardPairs[i][3] == 1) )
+            {
+                return 1;
+            }
+            if( (boardPairs[i][0] == 2) && (boardPairs[i][1] == 2)
+                    && (boardPairs[i][2] == 2) && (boardPairs[i][3] == 2) )
+            {
+                return 2;
+            }
+        }
+
+        return 0;
+    }
+
+    public boolean boardFull() {
+        for (int[] boxRows : gameState) {
+            for (int box : boxRows) {
+                if (box == 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
 }
