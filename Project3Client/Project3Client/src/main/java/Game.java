@@ -117,6 +117,34 @@ public class Game {
         displayMessage = getStatus();
     }
 
+    public boolean GameOver(){
+        if(outcome() == 0 && boardFull())
+        {
+            System.out.println("GAME TIE, NO ONE WINS");
+            gameOver = true;
+            return true;
+        }
+        if(outcome() == 1)
+        {
+            System.out.println("PLAYER ONE " + playerOneUser + " WINS!");
+            System.out.println("PLAYER TWO " + playerTwoUser + " LOSES!");
+            playerOneWinning = true;
+            playerTwoWinning = false;
+            gameOver = true;
+            return true;
+        }
+        if(outcome() == 2)
+        {
+            System.out.println("PLAYER TWO " + playerTwoUser +  " WINS!");
+            System.out.println("PLAYER ONE " + playerOneUser + " LOSES!");
+            playerOneWinning = false;
+            playerTwoWinning = true;
+            gameOver = true;
+            return true;
+        }
+        return false;
+    }
+
     public boolean isInvalidPlay(String username, int col){
         if(!started){
             return true;

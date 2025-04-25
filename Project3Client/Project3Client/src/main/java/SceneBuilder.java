@@ -133,7 +133,7 @@ public class SceneBuilder {
         return scene;
     }
 
-    public static Scene gameOverScreen(Game game, Stage primaryStage) {
+    public static Scene buildGameOverScreen(Game game, Stage primaryStage) {
         Text title = makeTitleText("Game Over! ", 70, TextAlignment.CENTER, true);
 
         Button playAgainButton = makeTitleButton("Login", 30);
