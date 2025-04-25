@@ -24,7 +24,7 @@ public class Game {
         this.gameID = gameID;
         this.playerOneUser = playerOne;
         this.playerTwoUser = playerTwo;
-        this.displayMessage = "Game has started!";
+        this.displayMessage = getStatus();
 
         gameState = new int[BOARD_SIZE][BOARD_SIZE];
         for(int i = 0; i < BOARD_SIZE; i++){
@@ -39,12 +39,12 @@ public class Game {
         this.playerOneWinning = false;
         this.playerTwoWinning = false;
         this.gameOver = false;
-        this.started = false;
         this.playerOneTurn = true;
+        this.started = false;
         this.gameID = gameID;
         this.playerOneUser = playerOne;
         this.playerTwoUser = "";
-        this.displayMessage = "Waiting... | Code: " + gameID;
+        this.displayMessage = getStatus();
 
         gameState = new int[BOARD_SIZE][BOARD_SIZE];
         for(int i = 0; i < BOARD_SIZE; i++){
@@ -54,10 +54,14 @@ public class Game {
         }
     }
 
-    public void fillGame(String playerTwo){
+    public void fillGame(String playerTwo, boolean swap){
         if(!this.started) {
             this.playerTwoUser = playerTwo;
-            this.displayMessage = "Game has started!";
+            this.displayMessage = getStatus();
+            if(swap){
+                this.playerTwoUser = this.playerOneUser;
+                this.playerOneUser = playerTwo;
+            }
             Start();
         }
     }
@@ -68,10 +72,15 @@ public class Game {
         }
         this.started = true;
         playerOneTurn = true;
+        System.out.println("=============");
+        System.out.println("SERVER GAME START!");
+        System.out.println("Player 1: " + playerOneUser);
+        System.out.println("Player 2: " + playerTwoUser);
+        System.out.println("=============");
     }
 
     public void Play(String username, int col){
-        if(!isValidPlay(username, col)){
+        if(isInvalidPlay(username, col)){
             return;
         }
 
@@ -83,20 +92,23 @@ public class Game {
         }
 
         playerOneTurn = !playerOneTurn;
+        displayMessage = getStatus();
     }
 
-    public boolean isValidPlay(String username, int col){
-        if(playerOneUser.equals(username) && playerOneTurn){
-            return gameState[BOARD_SIZE - 2][col] == 0;
+    public boolean isInvalidPlay(String username, int col){
+        if(!started){
+            return true;
         }
-        return false;
+        if((playerOneUser.equals(username) && playerOneTurn) || (playerTwoUser.equals(username) && !playerOneTurn)){
+            return gameState[0][col] != 0;
+        }
+        return true;
     }
     public String getStatus(){
-        String status = "GAME " + this.gameID;
         if(!this.started){
-            return status + " // GAME NOT STARTED";
+            return "GAME NOT STARTED";
         }
-        return status + " // " + (this.playerOneTurn ? playerOneUser : playerTwoUser) + "'s turn";
+        return (this.playerOneTurn ? playerOneUser : playerTwoUser) + "'s turn";
     }
 
 

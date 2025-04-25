@@ -1,8 +1,6 @@
 import javafx.application.Platform;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.Objects;
 
 public class ClientMessageHandler{
@@ -47,7 +45,7 @@ public class ClientMessageHandler{
                             SceneBuilder.username = myUsername;
                         }
                         if(Objects.equals(message.recipient, myUsername)){
-                            if(message.messageText.charAt(0) == '1') {
+                            if(message.moveCol == 1) {
                                 myGame.fillGame(message.username, false);
                             }
                             else {
@@ -57,13 +55,6 @@ public class ClientMessageHandler{
 
                             myGame.displayMessage = myGame.getStatus();
                             currentStage.setScene(SceneBuilder.buildGameScreen(myGame, currentStage));
-                        }
-                        break;
-                    case PLAY_ACCEPT:
-                        if(myGame.gameID == Integer.parseInt(message.recipient)){
-                            myGame.Play(message.messageText, message.moveCol);
-                            currentStage.setScene(SceneBuilder.buildGameScreen(myGame, currentStage));
-                            System.out.println(message.messageText + " PLAYED " + message.moveCol);
                         }
                         break;
                     default:
@@ -79,7 +70,9 @@ public class ClientMessageHandler{
         }
         switch(request.messageType){
             case PLAY:
-                if(!myGame.isValidPlay(myUsername, request.moveCol)){
+                System.out.println(request);
+                if(myGame.isInvalidPlay(myUsername, request.moveCol)){
+                    System.out.println("INVALID PLAY");
                     return;
                 }
                 myGame.Play(request.username, request.moveCol);

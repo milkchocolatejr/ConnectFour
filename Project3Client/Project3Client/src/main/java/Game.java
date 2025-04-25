@@ -1,9 +1,6 @@
 import javafx.scene.Scene;
-import javafx.scene.shape.Shape;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.lang.String;
-import java.util.Objects;
 
 public class Game {
     private final int BOARD_SIZE = 7;
@@ -15,7 +12,6 @@ public class Game {
     String playerTwoUser;
     String displayMessage;
     int gameID;
-    Scene GUI;
     boolean started;
     int[][] gameState;
 
@@ -76,14 +72,14 @@ public class Game {
         this.started = true;
         playerOneTurn = true;
         System.out.println("=============");
-        System.out.println("GAME START!");
+        System.out.println("CLIENT GAME START!");
         System.out.println("Player 1: " + playerOneUser);
         System.out.println("Player 2: " + playerTwoUser);
         System.out.println("=============");
     }
 
     public void Play(String username, int col){
-        if(!isValidPlay(username, col)){
+        if(isInvalidPlay(username, col)){
             return;
         }
 
@@ -98,14 +94,17 @@ public class Game {
         displayMessage = getStatus();
     }
 
-    public boolean isValidPlay(String username, int col){
+    public boolean isInvalidPlay(String username, int col){
         if(!started){
-            return false;
+            return true;
         }
-        if(playerOneUser.equals(username) && playerOneTurn){
-            return gameState[BOARD_SIZE - 2][col] == 0;
+        if((playerOneUser.equals(username) && playerOneTurn) || (playerTwoUser.equals(username) && !playerOneTurn)){
+            System.out.println("P1 : " + playerOneUser);
+            System.out.println("P2 : " + playerTwoUser);
+            System.out.println("Player " + (playerOneTurn ? 1 : 2) + "'s turn");
+            return gameState[0][col] != 0;
         }
-        return false;
+        return true;
     }
     public String getStatus(){
         if(!this.started){

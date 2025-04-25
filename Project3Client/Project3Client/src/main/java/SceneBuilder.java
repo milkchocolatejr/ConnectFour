@@ -124,9 +124,9 @@ public class SceneBuilder {
                 message.moveCol = col - 1;
                 message.messageText = Integer.toString(game.gameID);
                 ClientMessageHandler.send(message, primaryStage);
-                primaryStage.setTitle(username + "'s GAME | ID : " + game.gameID);
             }
         });
+        primaryStage.setTitle(username + "'s GAME | ID : " + game.gameID);
         return scene;
     }
 

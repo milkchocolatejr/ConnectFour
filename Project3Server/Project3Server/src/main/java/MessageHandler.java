@@ -25,20 +25,22 @@ public class MessageHandler {
                 for(Game game : server.getGames()){
                     if(game.gameID == Integer.parseInt(message.messageText)){
                         if(!game.started){
-                            game.fillGame(message.username);
+                            game.fillGame(message.username, false);
 
                             Message startMessage1 = new Message();
                             Message startMessage2 = new Message();
 
                             startMessage1.messageType = MessageType.START;
                             startMessage1.username = game.playerTwoUser;
-                            startMessage1.messageText = "1" + game.gameID;
+                            startMessage1.messageText = game.gameID + "";
                             startMessage1.recipient = game.playerOneUser;
+                            startMessage1.moveCol = 1;
 
                             startMessage2.messageType = MessageType.START;
                             startMessage2.username = game.playerOneUser;
                             startMessage2.messageText = game.gameID + "";
                             startMessage2.recipient = game.playerTwoUser;
+                            startMessage2.moveCol = 2;
 
                             send(startMessage1, server);
                             send(startMessage2, server);
