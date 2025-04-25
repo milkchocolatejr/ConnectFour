@@ -95,6 +95,7 @@ public class Game {
         }
 
         playerOneTurn = !playerOneTurn;
+        displayMessage = getStatus();
     }
 
     public boolean isValidPlay(String username, int col){
