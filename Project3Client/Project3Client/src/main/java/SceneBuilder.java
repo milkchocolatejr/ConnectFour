@@ -133,6 +133,37 @@ public class SceneBuilder {
         return scene;
     }
 
+    public static Scene gameOverScreen(Game game, Stage primaryStage) {
+        Text title = makeTitleText("Game Over! ", 70, TextAlignment.CENTER, true);
+
+        Button playAgainButton = makeTitleButton("Login", 30);
+        playAgainButton.setOnAction(e -> {
+
+            //buildGameScreen()
+            //set game to game that just occurred
+            primaryStage.setScene(SceneBuilder.buildGameScreen(game, primaryStage));
+        });
+
+        Button quitButton = makeTitleButton("Quit Game", 30);
+        quitButton.setOnAction(e -> {
+            //Go back to the title screen
+            primaryStage.setScene(SceneBuilder.buildTitleScreen(primaryStage));
+        });
+
+        VBox buttonBox = new VBox(10, playAgainButton, quitButton);
+        buttonBox.setAlignment(Pos.CENTER);
+
+        VBox root = new VBox(60, title, buttonBox);
+        BorderPane.setMargin(root, new Insets(25,25,25,25));
+
+        BorderPane canvas = new BorderPane(root);
+        canvas.setPrefSize(WIDTH - 100, HEIGHT - 100);
+        canvas.setStyle("-fx-background-color: linear-gradient(to bottom right, black, darkgoldenrod);");
+        canvas.setCenter(root);
+
+        return new Scene(canvas, WIDTH, HEIGHT);
+    }
+
     private static Pane makeBoard(int[][] gameBoard, double PANE_WIDTH, double PANE_HEIGHT, int GAP) {
         double tileWidth = (PANE_WIDTH - (COLUMNS + 1) * GAP) / COLUMNS;
         double tileHeight = (PANE_HEIGHT - (ROWS + 1) * GAP) / ROWS;
