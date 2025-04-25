@@ -22,6 +22,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.awt.dnd.peer.DragSourceContextPeer;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class SceneBuilder {
@@ -31,6 +32,7 @@ public class SceneBuilder {
     private static final int ROWS = 7;
     private static final int COLUMNS = 7;
     public static String username;
+    public static Random random = new Random(342);
 
     public static Scene buildTitleScreen(Stage primaryStage) {
         Text title = makeTitleText("Welcome to our \n Connect Four Project! \n SPR 2025 CS 342 ", 70, TextAlignment.CENTER, true);
@@ -61,8 +63,9 @@ public class SceneBuilder {
 
         Button randomCodeButton = makeTitleButton("Generate Random Code", 30);
         randomCodeButton.setOnAction(e -> {
+            int randomNumber = random.nextInt(99999);
             codeField.setText(
-                    Integer.toString(ThreadLocalRandom.current().nextInt(10000, 99999))
+                    String.format("%05d", randomNumber)
             );
         });
 
