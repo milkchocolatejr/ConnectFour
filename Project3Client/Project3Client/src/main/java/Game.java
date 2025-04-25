@@ -94,18 +94,23 @@ public class Game {
         if(outcome() == 0 && boardFull())
         {
             System.out.println("GAME TIE, NO ONE WINS");
+            gameOver = true;
         }
         if(outcome() == 1)
         {
-            System.out.println("PLAYER ONE " + playerOneUser + "WINS");
+            System.out.println("PLAYER ONE " + playerOneUser + " WINS!");
+            System.out.println("PLAYER TWO " + playerTwoUser + " LOSES!");
             playerOneWinning = true;
             playerTwoWinning = false;
+            gameOver = true;
         }
         if(outcome() == 2)
         {
-            System.out.println("PLAYER TWO " + playerTwoUser + "WINS");
+            System.out.println("PLAYER TWO " + playerTwoUser +  " WINS!");
+            System.out.println("PLAYER ONE " + playerOneUser + " LOSES!");
             playerOneWinning = false;
             playerTwoWinning = true;
+            gameOver = true;
         }
 
         playerOneTurn = !playerOneTurn;
