@@ -7,5 +7,6 @@ public enum MessageType {
     JOIN_ACCEPT,
     JOIN_DENY,
     START,
-    GAME_OVER
+    GAME_OVER,
+    CHAT
 }
