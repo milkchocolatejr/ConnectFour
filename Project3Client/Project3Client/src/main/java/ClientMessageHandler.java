@@ -24,12 +24,12 @@ public class ClientMessageHandler{
                             currentStage.setScene(SceneBuilder.buildGameScreen(myGame, currentStage));
                             System.out.println(message.username + " PLAYED " + message.moveCol);
                         }
-                            if(myGame.GameOver()){
-                                message.messageText = "SOMEBODY WON";
-                                message.messageType = MessageType.GAME_OVER;
-                                ClientMessageHandler.send(message, currentStage);
-                                currentStage.setScene(SceneBuilder.buildGameOverScreen(myGame, currentStage));
-                            }
+                        if(myGame.GameOver()){
+                            message.messageText = "SOMEBODY WON";
+                            message.messageType = MessageType.GAME_OVER;
+                            send(message, currentStage);
+                            currentStage.setScene(SceneBuilder.buildGameOverScreen(myGame, currentStage));
+                        }
                         break;
                     case DISCONNECT:
                         break;
@@ -84,13 +84,19 @@ public class ClientMessageHandler{
                     return;
                 }
                 myGame.Play(request.username, request.moveCol);
-                stage.setScene(SceneBuilder.buildGameScreen(myGame, stage));
+                if(myGame.GameOver()){
+                    stage.setScene(SceneBuilder.buildGameOverScreen(myGame, stage));
+                }
+                else{
+                    stage.setScene(SceneBuilder.buildGameScreen(myGame, stage));
+                }
                 break;
             case JOIN:
                 if(myGame != null){
                     return;
                 }
                 myUsername = request.username;
+                break;
         }
         ClientThread t1 = new ClientThread(request, stage);
         t1.start();

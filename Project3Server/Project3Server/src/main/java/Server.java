@@ -158,6 +158,7 @@ public class Server{
 
 				}
 				catch(Exception e) {
+					e.printStackTrace();
 					System.err.println("Streams not open");
 				}
 			}//end of run
