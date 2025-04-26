@@ -131,7 +131,7 @@ public class Game {
         this.playerTwoWinning = false;
         this.gameOver = false;
         this.playerOneTurn = true;
-        this.started = true;
+        this.started = false;
 
         this.gameState = new int[BOARD_SIZE][BOARD_SIZE];
         for(int i = 0; i < BOARD_SIZE; i++){
