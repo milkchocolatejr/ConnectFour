@@ -65,6 +65,9 @@ public class ClientMessageHandler{
                         break;
                     case GAME_OVER:
                         currentStage.setScene(SceneBuilder.buildGameOverScreen(myGame, currentStage));
+                    case CHAT:
+                        SceneBuilder.chatLog.getItems().add(message.username + ": " + message.messageText);
+                        currentStage.setScene(SceneBuilder.buildGameScreen(myGame, currentStage));
                     default:
                         break;
                 }

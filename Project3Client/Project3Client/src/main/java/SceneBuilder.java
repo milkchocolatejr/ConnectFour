@@ -8,10 +8,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.Light;
 import javafx.scene.effect.Lighting;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -22,6 +19,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.awt.dnd.peer.DragSourceContextPeer;
+import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -33,6 +31,7 @@ public class SceneBuilder {
     private static final int COLUMNS = 7;
     public static String username;
     public static Random random = new Random(342);
+    public static ListView<String> chatLog = new ListView<>();
 
     public static Scene buildTitleScreen(Stage primaryStage) {
         Text title = makeTitleText("Welcome to our \n Connect Four Project! \n SPR 2025 CS 342 ", 70, TextAlignment.CENTER, true);
@@ -90,14 +89,28 @@ public class SceneBuilder {
         int PANE_SIZE = 550;
         Text gameStateText = makeGameText(game.displayMessage, 40);
         Pane board = makeBoard(game.gameState, PANE_SIZE, PANE_SIZE, PANE_SIZE/100);
-        ListView<String> list = new ListView<String>();
 
-        String stringedID = game.gameID + "";
+        TextField chatEnter = new TextField();
+        Button sendChatButton = new Button("Send Chat");
+        sendChatButton.setOnAction(e -> {
+            Message message = new Message();
+            message.username = username;
+            message.messageText = chatEnter.getText();
+            message.messageType = MessageType.CHAT;
+            message.recipient = (Objects.equals(game.playerOneUser, username) ? game.playerTwoUser : game.playerOneUser);
+            ClientMessageHandler.send(message, primaryStage);
+            chatLog.getItems().add(username + " : "  + chatEnter.getText());
+            chatEnter.clear();
+        });
 
-        list.getItems().add(stringedID);
-        System.out.println(game.gameID);
+        HBox chatBox = new HBox(chatEnter, sendChatButton);
+        VBox gameAndTitle = new VBox(gameStateText, board);
+        VBox chat = new VBox(chatLog, chatBox);
+        HBox.setHgrow(chat, Priority.ALWAYS);
+        VBox.setVgrow(chatLog, Priority.ALWAYS);
+        chat.setFillWidth(true);
 
-        HBox root = new HBox(new VBox(gameStateText, board), list) ;
+        HBox root = new HBox(gameAndTitle, chat);
         BorderPane canvas = new BorderPane();
         canvas.setPrefSize(WIDTH, HEIGHT);
         canvas.setCenter(root);

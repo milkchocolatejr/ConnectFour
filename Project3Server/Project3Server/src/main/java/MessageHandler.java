@@ -80,6 +80,9 @@ public class MessageHandler {
                     }
                 }
                 break;
+            case CHAT:
+                send(message, server);
+                break;
             /*case GAME_OVER:
                 System.out.println("PLAY");
 
