@@ -147,7 +147,21 @@ public class SceneBuilder {
     }
 
     public static Scene buildGameOverScreen(Game game, Stage primaryStage) {
-        Text title = makeTitleText("Game Over! ", 70, TextAlignment.CENTER, true);
+        String titleText;
+        if(game.outcome() == 1)
+        {
+            titleText = "PLAYER 1 WINS!";
+        }
+        else if(game.outcome() == 2)
+        {
+            titleText = "PLAYER 2 WINS!";
+        }
+        else
+        {
+            titleText = "GAME IS TIED!";
+        }
+
+        Text title = makeTitleText(titleText, 70, TextAlignment.CENTER, true);
 
         Button playAgainButton = makeTitleButton("Play Again", 30);
         playAgainButton.setOnAction(e -> {
