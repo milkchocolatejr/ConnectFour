@@ -162,8 +162,27 @@ public class SceneBuilder {
         Button quitButton = makeTitleButton("Quit Game", 30);
         quitButton.setOnAction(e -> {
             //Go back to the title screen
-            primaryStage.setScene(SceneBuilder.buildTitleScreen(primaryStage));
+            Message message = new Message();
+            message.username = username;
+            message.messageText = game.gameID + "";
+            message.messageType = MessageType.QUIT;
+            message.recipient = (Objects.equals(game.playerOneUser, username) ? game.playerTwoUser : game.playerOneUser);
+            ClientMessageHandler.send(message, primaryStage);
+            //primaryStage.setTitle(username + "'s GAME | ID : " + game.gameID);
         });
+
+        /*TextField chatEnter = new TextField();
+        Button sendChatButton = new Button("Send Chat");
+        sendChatButton.setOnAction(e -> {
+            Message message = new Message();
+            message.username = username;
+            message.messageText = chatEnter.getText();
+            message.messageType = MessageType.CHAT;
+            message.recipient = (Objects.equals(game.playerOneUser, username) ? game.playerTwoUser : game.playerOneUser);
+            ClientMessageHandler.send(message, primaryStage);
+            chatLog.getItems().add(username + " : "  + chatEnter.getText());
+            chatEnter.clear();
+        });*/
 
         VBox buttonBox = new VBox(10, playAgainButton, quitButton);
         buttonBox.setAlignment(Pos.CENTER);

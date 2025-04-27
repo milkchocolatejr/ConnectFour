@@ -25,7 +25,7 @@ public class ClientMessageHandler{
                             System.out.println(message.username + " PLAYED " + message.moveCol);
                         }
                         if(myGame.GameOver()){
-                            message.messageText = "SOMEBODY WON";
+                            message.messageText = "GAME OVER";
                             message.messageType = MessageType.GAME_OVER;
                             send(message, currentStage);
                             currentStage.setScene(SceneBuilder.buildGameOverScreen(myGame, currentStage));
@@ -68,6 +68,12 @@ public class ClientMessageHandler{
                     case CHAT:
                         SceneBuilder.chatLog.getItems().add(message.username + ": " + message.messageText);
                         currentStage.setScene(SceneBuilder.buildGameScreen(myGame, currentStage));
+                    case QUIT:
+                        myGame.resetGame();
+                        myGame.started = false;
+                        myGame.playerOneUser = "";
+                        myGame.playerTwoUser = "";
+                        currentStage.setScene(SceneBuilder.buildTitleScreen(currentStage));
                     default:
                         break;
                 }

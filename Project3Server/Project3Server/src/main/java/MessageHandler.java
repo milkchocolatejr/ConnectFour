@@ -83,6 +83,18 @@ public class MessageHandler {
             case CHAT:
                 send(message, server);
                 break;
+            case QUIT:
+                Message quitMessage = new Message();
+                quitMessage.messageText = message.messageText;
+                System.out.println(message.messageText);
+                quitMessage.messageType = MessageType.QUIT;
+                for(Game game : server.getGames()){
+                    if(game.gameID == Integer.parseInt(quitMessage.messageText)){
+                        System.out.println("Sent out quit message from server");
+                        send(message, server);
+                    }
+                }
+                break;
             /*case GAME_OVER:
                 System.out.println("PLAY");
 

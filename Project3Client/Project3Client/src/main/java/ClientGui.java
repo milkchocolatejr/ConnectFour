@@ -12,7 +12,7 @@ public class ClientGui extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		renderTitle(primaryStage, "Welcome to connect four!");
+		renderTitle(primaryStage, "Welcome to Connect Four!");
     }
 
 	public void renderTitle(Stage primaryStage, String title){
