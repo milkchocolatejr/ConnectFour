@@ -1,5 +1,7 @@
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -99,6 +101,21 @@ public class MessageHandler {
                         }
                     }
                 }
+
+                /*for(Game game : server.getGames()){
+                    for(Server.ClientThread c : server.clients){
+                        if(game.playerOneUser.equals(c.username) ||
+                                game.playerTwoUser.equals(c.username)){
+                            System.out.println("Quitting Client");
+                            c.username = response.recipient;
+                            try {
+                                c.connection.close();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    }
+                }*/
                 break;
             /*case GAME_OVER:
                 System.out.println("PLAY");
