@@ -33,7 +33,7 @@ public class GuiServer extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		serverConnection = new Server(data->{
 			Platform.runLater(()->{
-				MessageHandler.updateStage(data, serverConnection, primaryStage);
+				MessageHandler.updateStage(serverConnection, primaryStage);
 			});
 		}, primaryStage);
 

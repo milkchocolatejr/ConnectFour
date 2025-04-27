@@ -45,12 +45,13 @@ public class SceneBuilder {
         Button loginButton = makeTitleButton("Login", 30);
         loginButton.setOnAction(e -> {
             String username = usernameField.getText();
-            int gameCode = Integer.parseInt(codeField.getText());
-
-            if(gameCode < 10000 || gameCode > 99999){
+            if(codeField.getText().length() != 5){
                 codeField.setText("INVALID GAME CODE: PLEASE ENTER A 5 DIGIT INTEGER!");
                 return;
             }
+            int gameCode = Integer.parseInt(codeField.getText());
+
+
 
             Message message = new Message();
             message.username = username;
@@ -82,6 +83,8 @@ public class SceneBuilder {
         canvas.setStyle("-fx-background-color: linear-gradient(to bottom right, black, darkgoldenrod);");
         canvas.setCenter(root);
 
+        primaryStage.setTitle("Welcome to our Connect Four Project!");
+
         return new Scene(canvas, WIDTH, HEIGHT);
     }
 
@@ -92,6 +95,7 @@ public class SceneBuilder {
 
         TextField chatEnter = new TextField();
         Button sendChatButton = new Button("Send Chat");
+
         sendChatButton.setOnAction(e -> {
             Message message = new Message();
             message.username = username;
@@ -152,9 +156,6 @@ public class SceneBuilder {
         Button playAgainButton = makeTitleButton("Play Again", 30);
         playAgainButton.setOnAction(e -> {
 
-            //buildGameScreen()
-            //set game to game that just occurred
-            //Reset Game from inside game over function
             game.resetGame();
             primaryStage.setScene(SceneBuilder.buildGameScreen(game, primaryStage));
         });
@@ -168,7 +169,7 @@ public class SceneBuilder {
             message.messageType = MessageType.QUIT;
             message.recipient = (Objects.equals(game.playerOneUser, username) ? game.playerTwoUser : game.playerOneUser);
             ClientMessageHandler.send(message, primaryStage);
-            //primaryStage.setTitle(username + "'s GAME | ID : " + game.gameID);
+            primaryStage.setScene(SceneBuilder.buildTitleScreen(primaryStage));
         });
 
         VBox buttonBox = new VBox(10, playAgainButton, quitButton);
