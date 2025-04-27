@@ -33,9 +33,25 @@ public class ClientThread extends Thread{
 				send(this.requestMessage);
 				System.out.println("CLIENT SENT " + this.requestMessage.messageType);
 			}
+			if(requestMessage.messageType == MessageType.QUIT){
+				socketClient.close();
+				out.flush();
+				out.close();
+				in.close();
+				return;
+			}
 
 			// Only process the first response immediately (e.g., JOIN_ACCEPT)
 			Message responseMessage = (Message) in.readObject();
+
+			if(requestMessage.messageType == MessageType.QUIT){
+				socketClient.close();
+				out.flush();
+				out.close();
+				in.close();
+				return;
+			}
+
 			System.out.println("CLIENT GOT " + responseMessage.messageType);
 			ClientMessageHandler.handle(responseMessage, this.currentStage);
 

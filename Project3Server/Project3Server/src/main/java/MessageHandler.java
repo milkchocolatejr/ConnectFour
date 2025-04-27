@@ -2,13 +2,11 @@ import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class MessageHandler {
     public static Game handle(Message message, Stage stage, Server server) {
         Message response = new Message();
-        System.out.println(message.toString());
         switch(message.messageType){
             case JOIN:
                 boolean duplicateUsername = false;
@@ -67,9 +65,6 @@ public class MessageHandler {
                 send(response, server);
                 return g;
             case PLAY:
-                System.out.println("PLAY");
-
-
                 for(Game game : server.getGames()){
                     if(game.gameID == Integer.parseInt(message.messageText)){
                         game.Play(message.username, message.moveCol);
@@ -86,65 +81,30 @@ public class MessageHandler {
                 send(message, server);
                 break;
             case QUIT:
+                //Send Reflective quit message to other client
                 Message quitMessage = new Message();
-                quitMessage.messageText = message.messageText;
-                System.out.println(message.messageText);
                 quitMessage.messageType = MessageType.QUIT;
-
-                for(Game game : server.getGames()){
-                    for(Server.ClientThread c : server.clients){
-                        if(game.playerOneUser.equals(c.username) ||
-                                game.playerTwoUser.equals(c.username)){
-                            System.out.println("Sent out quit message to clients from server");
-                            c.username = response.recipient;
-                            c.send(quitMessage);
+                quitMessage.recipient = message.recipient;
+                send(quitMessage, server);
+                //Close both connections
+                for(Server.ClientThread client : server.clients){
+                    if(Objects.equals(client.username, message.username) || Objects.equals(client.username, message.recipient)){
+                        try {
+                            client.connection.close();
+                        } catch (IOException e) {
+                            System.out.println("CLOSE CONNECTION FAILURE!");
+                            e.printStackTrace();
                         }
-                    }
-                }
-
-                /*for(Game game : server.getGames()){
-                    for(Server.ClientThread c : server.clients){
-                        if(game.playerOneUser.equals(c.username) ||
-                                game.playerTwoUser.equals(c.username)){
-                            System.out.println("Quitting Client");
-                            c.username = response.recipient;
-                            try {
-                                c.connection.close();
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
+                        server.clients.remove(client);
+                        for(Game game : server.getGames()){
+                            if(game.gameID == Integer.parseInt(message.messageText)){
+                                server.getGames().remove(game);
                             }
                         }
+                        updateStage(server, stage);
                     }
-                }*/
+                }
                 break;
-            /*case GAME_OVER:
-                System.out.println("PLAY");
-
-
-                for(Game game : server.getGames()){
-                    if(game.gameID == Integer.parseInt(message.messageText)){
-                        game.Play(message.username, message.moveCol);
-                        Message reflectiveMessage = new Message();
-                        reflectiveMessage.messageType = MessageType.PLAY;
-                        reflectiveMessage.username = message.username;
-                        reflectiveMessage.recipient = game.playerOneTurn ? game.playerOneUser: game.playerTwoUser;
-                        reflectiveMessage.moveCol = message.moveCol;
-                        stage.
-                        send(reflectiveMessage, server);
-                    }
-                }
-
-                    for(Game game : server.getGames()){
-                        if(game.gameID == Integer.parseInt(message.messageText)){
-                            if(game.gameOver()) {
-
-                            }
-
-
-                        }
-                    }
-                }*/
-
         }
         return null;
     }
@@ -166,27 +126,19 @@ public class MessageHandler {
         }
     }
 
-    public static void updateStage(Message data, Server server, Stage stage) {
-        switch(data.messageType){
-            case JOIN_ACCEPT:
-                ListView<String> listGames = new ListView<>();
-                ListView<String> listUsers = new ListView<>();
-                for(Game g: server.getGames()){
-                    listGames.getItems().add(String.valueOf(g.gameID));
-                    listUsers.getItems().add(String.valueOf(g.playerOneUser));
-                    if(g.playerTwoUser != ""){
-                        listGames.getItems().add(String.valueOf(g.gameID));
-                        listUsers.getItems().add(String.valueOf(g.playerTwoUser));
-                    }
-                }
-
-                stage.setScene(SceneBuilder.buildInitScreen(stage, listGames, listUsers));
-                stage.show();
-                break;
-            case JOIN_DENY:
-                break;
-            case PLAY:
-                break;
+    public static void updateStage(Server server, Stage stage) {
+        ListView<String> listGames = new ListView<>();
+        ListView<String> listUsers = new ListView<>();
+        for(Game g: server.getGames()){
+            listGames.getItems().add(String.valueOf(g.gameID));
+            listUsers.getItems().add(String.valueOf(g.playerOneUser));
+            if(g.playerTwoUser != ""){
+                listGames.getItems().add(String.valueOf(g.gameID));
+                listUsers.getItems().add(String.valueOf(g.playerTwoUser));
+            }
         }
+
+        stage.setScene(SceneBuilder.buildInitScreen(stage, listGames, listUsers));
+        stage.show();
     }
 }

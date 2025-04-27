@@ -65,15 +65,18 @@ public class ClientMessageHandler{
                         break;
                     case GAME_OVER:
                         currentStage.setScene(SceneBuilder.buildGameOverScreen(myGame, currentStage));
+                        break;
                     case CHAT:
-                        SceneBuilder.chatLog.getItems().add(message.username + ": " + message.messageText);
-                        currentStage.setScene(SceneBuilder.buildGameScreen(myGame, currentStage));
+                        if(Objects.equals(message.recipient, myUsername)){
+                            SceneBuilder.chatLog.getItems().add(message.username + ": " + message.messageText);
+                            currentStage.setScene(SceneBuilder.buildGameScreen(myGame, currentStage));
+                        }
+                        break;
                     case QUIT:
-                        myGame.resetGame();
-                        myGame.started = false;
-                        myGame.playerOneUser = "";
-                        myGame.playerTwoUser = "";
+                        myGame = null;
+                        myUsername = null;
                         currentStage.setScene(SceneBuilder.buildTitleScreen(currentStage));
+                        break;
                     default:
                         break;
                 }
@@ -105,6 +108,11 @@ public class ClientMessageHandler{
                     return;
                 }
                 myUsername = request.username;
+                break;
+            case QUIT:
+                myGame = null;
+                myUsername = null;
+                stage.setScene(SceneBuilder.buildTitleScreen(stage));
                 break;
         }
         ClientThread t1 = new ClientThread(request, stage);
