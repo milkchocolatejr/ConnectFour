@@ -37,6 +37,7 @@ public class GuiServer extends Application{
 			});
 		}, primaryStage);
 
+		SceneBuilder.server = serverConnection;
 
 		listGameCodes = new ListView<>();
 		listUsers = new ListView<>();

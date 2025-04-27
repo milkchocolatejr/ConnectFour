@@ -7,7 +7,6 @@ import java.util.Objects;
 public class MessageHandler {
     public static Game handle(Message message, Stage stage, Server server) {
         Message response = new Message();
-        System.out.println(message.toString());
         switch(message.messageType){
             case JOIN:
                 boolean duplicateUsername = false;
