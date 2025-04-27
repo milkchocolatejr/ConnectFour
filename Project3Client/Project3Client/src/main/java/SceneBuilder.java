@@ -171,19 +171,6 @@ public class SceneBuilder {
             //primaryStage.setTitle(username + "'s GAME | ID : " + game.gameID);
         });
 
-        /*TextField chatEnter = new TextField();
-        Button sendChatButton = new Button("Send Chat");
-        sendChatButton.setOnAction(e -> {
-            Message message = new Message();
-            message.username = username;
-            message.messageText = chatEnter.getText();
-            message.messageType = MessageType.CHAT;
-            message.recipient = (Objects.equals(game.playerOneUser, username) ? game.playerTwoUser : game.playerOneUser);
-            ClientMessageHandler.send(message, primaryStage);
-            chatLog.getItems().add(username + " : "  + chatEnter.getText());
-            chatEnter.clear();
-        });*/
-
         VBox buttonBox = new VBox(10, playAgainButton, quitButton);
         buttonBox.setAlignment(Pos.CENTER);
 

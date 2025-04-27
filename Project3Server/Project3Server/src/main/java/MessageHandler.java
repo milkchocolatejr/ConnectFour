@@ -88,10 +88,15 @@ public class MessageHandler {
                 quitMessage.messageText = message.messageText;
                 System.out.println(message.messageText);
                 quitMessage.messageType = MessageType.QUIT;
+
                 for(Game game : server.getGames()){
-                    if(game.gameID == Integer.parseInt(quitMessage.messageText)){
-                        System.out.println("Sent out quit message from server");
-                        send(message, server);
+                    for(Server.ClientThread c : server.clients){
+                        if(game.playerOneUser.equals(c.username) ||
+                                game.playerTwoUser.equals(c.username)){
+                            System.out.println("Sent out quit message to clients from server");
+                            c.username = response.recipient;
+                            c.send(quitMessage);
+                        }
                     }
                 }
                 break;
